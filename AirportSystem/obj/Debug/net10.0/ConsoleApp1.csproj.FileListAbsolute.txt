@@ -1,0 +1,14 @@
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/bin/Debug/net10.0/ConsoleApp1
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/bin/Debug/net10.0/ConsoleApp1.deps.json
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/bin/Debug/net10.0/ConsoleApp1.runtimeconfig.json
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/bin/Debug/net10.0/ConsoleApp1.dll
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/bin/Debug/net10.0/ConsoleApp1.pdb
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ConsoleApp1.GeneratedMSBuildEditorConfig.editorconfig
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ConsoleApp1.AssemblyInfoInputs.cache
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ConsoleApp1.AssemblyInfo.cs
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ConsoleApp1.csproj.CoreCompileInputs.cache
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ConsoleApp1.dll
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/refint/ConsoleApp1.dll
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ConsoleApp1.pdb
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ConsoleApp1.genruntimeconfig.cache
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ref/ConsoleApp1.dll
