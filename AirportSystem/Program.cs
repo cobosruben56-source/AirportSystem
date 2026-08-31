@@ -16,7 +16,6 @@ namespace AirportSystem
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            // Try to load saved data
             var (flights, passengers, bookings) = DataStorage.LoadData();
             if (flights != null && passengers != null && bookings != null)
             {
@@ -37,7 +36,7 @@ namespace AirportSystem
                 Console.WriteLine("========================================");
                 Console.WriteLine("          AIRPORT MANAGEMENT SYSTEM    ");
                 Console.WriteLine("========================================");
-                Console.WriteLine("1. List all flights");
+                Console.WriteLine("1. List all flights / register new flight");
                 Console.WriteLine("2. Search flights");
                 Console.WriteLine("3. Register passenger");
                 Console.WriteLine("4. Book a ticket");
@@ -93,8 +92,97 @@ namespace AirportSystem
                                   $"Dep: {f.DepartureTime:g} | Seats: {f.AvailableSeats}/{f.TotalSeats} | " +
                                   $"Status: {f.Status} | Gate: {f.Gate} | Term: {f.Terminal}");
             }
+
+            Console.WriteLine("\nDo you want to register a new flight? (y/n) ");
+            string? answer = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(answer) && answer.Trim().ToLower() == "y")
+                RegisterFlight();
+
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
+            return;
+        }
+
+        private static void RegisterFlight()
+        {
+            Console.Clear();
+            Console.WriteLine("=== REGISTER NEW FLIGHT ===");
+
+            Console.Write("Flight number (e.g. AA101): ");
+            string? flightNumber = Console.ReadLine();
+            Console.Write("Airline name: ");
+            string? airline = Console.ReadLine();
+            Console.Write("Origin code (e.g. IST): ");
+            string? origin = Console.ReadLine();
+            Console.Write("Destination code (e.g. JFK): ");
+            string? destination = Console.ReadLine();
+            Console.Write("Departure time (yyyy-mm-dd hh:mm): ");
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime departure))
+            {
+                Console.WriteLine("❌ Invalid departure time.");
+                return;
+            }
+            Console.Write("Arrival time (yyyy-mm-dd hh:mm): ");
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime arrival))
+            {
+                Console.WriteLine("❌ Invalid arrival time.");
+                return;
+            }
+            Console.Write("Base price: ");
+            if (!decimal.TryParse(Console.ReadLine(), out decimal price))
+            {
+                Console.WriteLine("❌ Invalid price.");
+                return;
+            }
+            Console.Write("Gate (e.g. A12): ");
+            string? gate = Console.ReadLine();
+            Console.Write("Terminal (number): ");
+            if (!int.TryParse(Console.ReadLine(), out int terminal))
+            {
+                Console.WriteLine("❌ Invalid terminal.");
+                return;
+            }
+            Console.Write("Number of seat rows: ");
+            if (!int.TryParse(Console.ReadLine(), out int rows))
+            {
+                Console.WriteLine("❌ Invalid row count.");
+                return;
+            }
+            Console.Write("Seat columns (e.g. ABCDEF): ");
+            string? columns = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(flightNumber) || string.IsNullOrWhiteSpace(airline) ||
+                string.IsNullOrWhiteSpace(origin) || string.IsNullOrWhiteSpace(destination) ||
+                string.IsNullOrWhiteSpace(gate) || string.IsNullOrWhiteSpace(columns))
+            {
+                Console.WriteLine("❌ All required fields must be filled.");
+                return;
+            }
+
+            var flight = new Flight
+            {
+                FlightNumber = flightNumber.Trim(),
+                Airline = airline.Trim(),
+                Origin = origin.Trim().ToUpper(),
+                Destination = destination.Trim().ToUpper(),
+                DepartureTime = departure,
+                ArrivalTime = arrival,
+                BasePrice = price,
+                Gate = gate.Trim().ToUpper(),
+                Terminal = terminal,
+                Status = FlightStatus.Scheduled
+            };
+            flight.InitializeSeats(rows, columns.Trim().ToUpper());
+
+            try
+            {
+                _service.AddFlight(flight);
+                Console.WriteLine($"✅ Flight {flight.FlightNumber} registered successfully with {flight.TotalSeats} seats.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ {ex.Message}");
+            }
         }
 
         static void SearchFlights()
@@ -105,13 +193,8 @@ namespace AirportSystem
             string? origin = Console.ReadLine();
             Console.Write("Destination (or leave empty): ");
             string? dest = Console.ReadLine();
-            Console.Write("Date (yyyy-mm-dd, or leave empty): ");
-            string? dateInput = Console.ReadLine();
-            DateTime? date = null;
-            if (!string.IsNullOrWhiteSpace(dateInput) && DateTime.TryParse(dateInput, out DateTime d))
-                date = d;
 
-            var results = _service.SearchFlights(origin, dest, date);
+            var results = _service.SearchFlights(origin, dest, null);
             if (!results.Any())
             {
                 Console.WriteLine("No flights found.");

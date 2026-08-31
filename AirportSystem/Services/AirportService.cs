@@ -14,12 +14,10 @@ namespace AirportSystem.Services
         private int _nextPassengerId = 1;
         private int _nextBookingId = 1;
 
-        // --- Data access ---
         public List<Flight> GetAllFlights() => _flights;
         public List<Passenger> GetAllPassengers() => _passengers;
         public List<Booking> GetAllBookings() => _bookings;
 
-        // --- Flight management ---
         public void AddFlight(Flight flight)
         {
             if (_flights.Any(f => f.FlightNumber == flight.FlightNumber))
@@ -39,7 +37,6 @@ namespace AirportSystem.Services
             return query.ToList();
         }
 
-        // --- Passenger management ---
         public Passenger RegisterPassenger(string firstName, string lastName, string email, string phone)
         {
             var passenger = new Passenger
@@ -56,7 +53,6 @@ namespace AirportSystem.Services
 
         public Passenger? FindPassenger(int id) => _passengers.FirstOrDefault(p => p.Id == id);
 
-        // --- Booking ---
         public (bool success, string message, int bookingId) BookTicket(
             string flightNumber, int passengerId, string seatNumber)
         {
@@ -77,7 +73,6 @@ namespace AirportSystem.Services
             if (passenger == null)
                 return (false, "Passenger not found. Please register first.", -1);
 
-            // Book the seat
             flight.BookSeat(seatNumber);
 
             var booking = new Booking
@@ -112,7 +107,6 @@ namespace AirportSystem.Services
             return _bookings.Where(b => b.PassengerId == passengerId).ToList();
         }
 
-        // --- Check-in ---
         public bool CheckIn(int bookingId)
         {
             var booking = _bookings.FirstOrDefault(b => b.BookingId == bookingId);
@@ -126,7 +120,6 @@ namespace AirportSystem.Services
             return true;
         }
 
-        // --- Advance time (simulate) ---
         public void AdvanceTime(TimeSpan delta)
         {
             DateTime now = DateTime.Now.Add(delta);
@@ -146,7 +139,6 @@ namespace AirportSystem.Services
             }
         }
 
-        // --- Seed sample data ---
         public void SeedData()
         {
             var f1 = new Flight
@@ -162,7 +154,7 @@ namespace AirportSystem.Services
                 Terminal = 1,
                 Status = FlightStatus.Scheduled
             };
-            f1.InitializeSeats(20, "ABCDEF"); // 20 rows x 6 cols = 120 seats
+            f1.InitializeSeats(20, "ABCDEF");
             _flights.Add(f1);
 
             var f2 = new Flight
@@ -178,10 +170,9 @@ namespace AirportSystem.Services
                 Terminal = 2,
                 Status = FlightStatus.Scheduled
             };
-            f2.InitializeSeats(15, "ABCD"); // 60 seats
+            f2.InitializeSeats(15, "ABCD"); 
             _flights.Add(f2);
 
-            // Register a sample passenger
             RegisterPassenger("John", "Doe", "john@example.com", "1234567890");
         }
     }

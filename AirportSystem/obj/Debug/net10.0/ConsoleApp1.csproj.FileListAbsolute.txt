@@ -12,3 +12,4 @@
 /home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ConsoleApp1.pdb
 /home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ConsoleApp1.genruntimeconfig.cache
 /home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ref/ConsoleApp1.dll
+/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/obj/Debug/net10.0/ConsoleApp1.sourcelink.json

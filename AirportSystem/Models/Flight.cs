@@ -18,7 +18,6 @@ namespace AirportSystem.Models
         public int Terminal { get; set; }
         public FlightStatus Status { get; set; }
 
-        // Seat map: key = seat number (e.g. "1A"), value = true if booked
         public Dictionary<string, bool> SeatMap { get; set; } = new();
 
         public int AvailableSeats
@@ -32,7 +31,6 @@ namespace AirportSystem.Models
             }
         }
 
-        // Helper to initialize seat map (e.g. rows 1-20, columns A-F)
         public void InitializeSeats(int rows, string columns)
         {
             SeatMap.Clear();
@@ -41,13 +39,12 @@ namespace AirportSystem.Models
                 foreach (char c in columns)
                 {
                     string seat = r + c.ToString();
-                    SeatMap[seat] = false; // false = available
+                    SeatMap[seat] = false; 
                 }
             }
             TotalSeats = SeatMap.Count;
         }
 
-        // Get list of available seat numbers
         public List<string> GetAvailableSeats()
         {
             var available = new List<string>();
@@ -57,7 +54,6 @@ namespace AirportSystem.Models
             return available;
         }
 
-        // Book a specific seat
         public bool BookSeat(string seatNumber)
         {
             if (SeatMap.ContainsKey(seatNumber) && !SeatMap[seatNumber])
@@ -68,7 +64,6 @@ namespace AirportSystem.Models
             return false;
         }
 
-        // Free a seat (for cancellations)
         public void FreeSeat(string seatNumber)
         {
             if (SeatMap.ContainsKey(seatNumber))
