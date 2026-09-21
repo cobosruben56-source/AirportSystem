@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/AirportSystem/">
+    <Project Path="AirportSystem/ConsoleApp1.csproj" />
+  </Folder>
+  <Project Path="AirportSystem.UI/AirportSystem.UI.csproj" />
+</Solution>

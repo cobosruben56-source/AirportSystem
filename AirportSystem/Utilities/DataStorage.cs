@@ -40,7 +40,6 @@ namespace AirportSystem.Utilities
                 PropertyNameCaseInsensitive = true
             };
 
-            // Deserialize into an anonymous type
             var data = JsonSerializer.Deserialize<DataContainer>(json, options);
             if (data == null)
                 return (null, null, null);
@@ -48,7 +47,6 @@ namespace AirportSystem.Utilities
             return (data.Flights, data.Passengers, data.Bookings);
         }
 
-        // Helper class for deserialization
         private class DataContainer
         {
             public List<Flight>? Flights { get; set; }
