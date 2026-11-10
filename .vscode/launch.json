@@ -1,0 +1,22 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // C# Dev Kit hides the legacy "coreclr" type, so we must use "dotnet".
+      // It builds the project automatically (no preLaunchTask needed).
+      "name": "Launch AirportSystem.UI (Avalonia)",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/AirportSystem.UI/AirportSystem.UI.csproj"
+    },
+    {
+      "name": "Launch AirportSystem (Console)",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/AirportSystem/ConsoleApp1.csproj"
+    }
+  ]
+}

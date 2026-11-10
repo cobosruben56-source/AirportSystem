@@ -1,12 +1,12 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net10.0": {
-      "Avalonia/12.1.2": {
+      "Avalonia/12.1.6": {
         "type": "package",
         "dependencies": {
           "Avalonia.BuildServices": "11.3.2",
-          "Avalonia.Remote.Protocol": "12.1.2",
+          "Avalonia.Remote.Protocol": "12.1.6",
           "MicroCom.Runtime": "0.11.6"
         },
         "compile": {
@@ -107,15 +107,15 @@
           "buildTransitive/Avalonia.BuildServices.targets": {}
         }
       },
-      "Avalonia.Desktop/12.1.2": {
+      "Avalonia.Desktop/12.1.6": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "12.1.2",
-          "Avalonia.HarfBuzz": "12.1.2",
-          "Avalonia.Native": "12.1.2",
-          "Avalonia.Skia": "12.1.2",
-          "Avalonia.Win32": "12.1.2",
-          "Avalonia.X11": "12.1.2"
+          "Avalonia": "12.1.6",
+          "Avalonia.HarfBuzz": "12.1.6",
+          "Avalonia.Native": "12.1.6",
+          "Avalonia.Skia": "12.1.6",
+          "Avalonia.Win32": "12.1.6",
+          "Avalonia.X11": "12.1.6"
         },
         "compile": {
           "lib/net10.0/Avalonia.Desktop.dll": {
@@ -144,10 +144,10 @@
           }
         }
       },
-      "Avalonia.FreeDesktop/12.1.2": {
+      "Avalonia.FreeDesktop/12.1.6": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "12.1.2",
+          "Avalonia": "12.1.6",
           "Tmds.DBus.Protocol": "0.94.1"
         },
         "compile": {
@@ -161,10 +161,10 @@
           }
         }
       },
-      "Avalonia.FreeDesktop.AtSpi/12.1.2": {
+      "Avalonia.FreeDesktop.AtSpi/12.1.6": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "12.1.2"
+          "Avalonia": "12.1.6"
         },
         "compile": {
           "lib/net10.0/Avalonia.FreeDesktop.AtSpi.dll": {
@@ -177,10 +177,10 @@
           }
         }
       },
-      "Avalonia.HarfBuzz/12.1.2": {
+      "Avalonia.HarfBuzz/12.1.6": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "12.1.2",
+          "Avalonia": "12.1.6",
           "HarfBuzzSharp": "8.3.1.3",
           "HarfBuzzSharp.NativeAssets.Linux": "8.3.1.3",
           "HarfBuzzSharp.NativeAssets.WebAssembly": "8.3.1.3"
@@ -196,10 +196,10 @@
           }
         }
       },
-      "Avalonia.Native/12.1.2": {
+      "Avalonia.Native/12.1.6": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "12.1.2"
+          "Avalonia": "12.1.6"
         },
         "compile": {
           "lib/net10.0/Avalonia.Native.dll": {
@@ -218,7 +218,7 @@
           }
         }
       },
-      "Avalonia.Remote.Protocol/12.1.2": {
+      "Avalonia.Remote.Protocol/12.1.6": {
         "type": "package",
         "compile": {
           "lib/net10.0/Avalonia.Remote.Protocol.dll": {
@@ -231,10 +231,10 @@
           }
         }
       },
-      "Avalonia.Skia/12.1.2": {
+      "Avalonia.Skia/12.1.6": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "12.1.2",
+          "Avalonia": "12.1.6",
           "HarfBuzzSharp": "8.3.1.3",
           "HarfBuzzSharp.NativeAssets.Linux": "8.3.1.3",
           "HarfBuzzSharp.NativeAssets.WebAssembly": "8.3.1.3",
@@ -253,10 +253,10 @@
           }
         }
       },
-      "Avalonia.Themes.Fluent/12.1.2": {
+      "Avalonia.Themes.Fluent/12.1.6": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "12.1.2"
+          "Avalonia": "12.1.6"
         },
         "compile": {
           "lib/net10.0/Avalonia.Themes.Fluent.dll": {
@@ -269,10 +269,10 @@
           }
         }
       },
-      "Avalonia.Win32/12.1.2": {
+      "Avalonia.Win32/12.1.6": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "12.1.2",
+          "Avalonia": "12.1.6",
           "Avalonia.Angle.Windows.Natives": "2.1.27548.20260419"
         },
         "compile": {
@@ -292,13 +292,13 @@
           }
         }
       },
-      "Avalonia.X11/12.1.2": {
+      "Avalonia.X11/12.1.6": {
         "type": "package",
         "dependencies": {
-          "Avalonia": "12.1.2",
-          "Avalonia.FreeDesktop": "12.1.2",
-          "Avalonia.FreeDesktop.AtSpi": "12.1.2",
-          "Avalonia.Skia": "12.1.2"
+          "Avalonia": "12.1.6",
+          "Avalonia.FreeDesktop": "12.1.6",
+          "Avalonia.FreeDesktop.AtSpi": "12.1.6",
+          "Avalonia.Skia": "12.1.6"
         },
         "compile": {
           "lib/net10.0/Avalonia.X11.dll": {
@@ -491,13 +491,13 @@
           "lib/net8.0/MicroCom.Runtime.dll": {}
         }
       },
-      "Microsoft.EntityFrameworkCore/10.0.4": {
+      "Microsoft.EntityFrameworkCore/10.0.12": {
         "type": "package",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Abstractions": "10.0.4",
-          "Microsoft.EntityFrameworkCore.Analyzers": "10.0.4",
-          "Microsoft.Extensions.Caching.Memory": "10.0.4",
-          "Microsoft.Extensions.Logging": "10.0.4"
+          "Microsoft.EntityFrameworkCore.Abstractions": "10.0.12",
+          "Microsoft.EntityFrameworkCore.Analyzers": "10.0.12",
+          "Microsoft.Extensions.Caching.Memory": "10.0.12",
+          "Microsoft.Extensions.Logging": "10.0.12"
         },
         "compile": {
           "lib/net10.0/Microsoft.EntityFrameworkCore.dll": {
@@ -513,7 +513,7 @@
           "buildTransitive/net10.0/Microsoft.EntityFrameworkCore.props": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.Abstractions/10.0.4": {
+      "Microsoft.EntityFrameworkCore.Abstractions/10.0.12": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
@@ -526,7 +526,7 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Analyzers/10.0.4": {
+      "Microsoft.EntityFrameworkCore.Analyzers/10.0.12": {
         "type": "package"
       },
       "Microsoft.EntityFrameworkCore.Relational/10.0.4": {
@@ -548,10 +548,10 @@
           }
         }
       },
-      "Microsoft.Extensions.Caching.Abstractions/10.0.4": {
+      "Microsoft.Extensions.Caching.Abstractions/10.0.12": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.4"
+          "Microsoft.Extensions.Primitives": "10.0.12"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -567,14 +567,14 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Caching.Memory/10.0.4": {
+      "Microsoft.Extensions.Caching.Memory/10.0.12": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "10.0.4",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.4",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.4",
-          "Microsoft.Extensions.Options": "10.0.4",
-          "Microsoft.Extensions.Primitives": "10.0.4"
+          "Microsoft.Extensions.Caching.Abstractions": "10.0.12",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.12",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.12",
+          "Microsoft.Extensions.Options": "10.0.12",
+          "Microsoft.Extensions.Primitives": "10.0.12"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Caching.Memory.dll": {
@@ -609,10 +609,10 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.DependencyInjection/10.0.4": {
+      "Microsoft.Extensions.DependencyInjection/10.0.12": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.4"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.12"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.DependencyInjection.dll": {
@@ -628,7 +628,7 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.4": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.12": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
@@ -644,12 +644,12 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Logging/10.0.4": {
+      "Microsoft.Extensions.Logging/10.0.12": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "10.0.4",
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.4",
-          "Microsoft.Extensions.Options": "10.0.4"
+          "Microsoft.Extensions.DependencyInjection": "10.0.12",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.12",
+          "Microsoft.Extensions.Options": "10.0.12"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Logging.dll": {
@@ -665,10 +665,10 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/10.0.4": {
+      "Microsoft.Extensions.Logging.Abstractions/10.0.12": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.4"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.12"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Logging.Abstractions.dll": {
@@ -684,11 +684,11 @@
           "buildTransitive/net8.0/Microsoft.Extensions.Logging.Abstractions.targets": {}
         }
       },
-      "Microsoft.Extensions.Options/10.0.4": {
+      "Microsoft.Extensions.Options/10.0.12": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.4",
-          "Microsoft.Extensions.Primitives": "10.0.4"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.12",
+          "Microsoft.Extensions.Primitives": "10.0.12"
         },
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Options.dll": {
@@ -704,7 +704,7 @@
           "buildTransitive/net8.0/Microsoft.Extensions.Options.targets": {}
         }
       },
-      "Microsoft.Extensions.Primitives/10.0.4": {
+      "Microsoft.Extensions.Primitives/10.0.12": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.Primitives.dll": {
@@ -925,6 +925,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
+          "Microsoft.EntityFrameworkCore": "10.0.12",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.3"
         },
         "compile": {
@@ -937,10 +938,10 @@
     }
   },
   "libraries": {
-    "Avalonia/12.1.2": {
-      "sha512": "GHSe4qxjbqqxB570xuB4KtoD+Qhk3uKXJUXbelGYhGz/ti8xEoL7e5DGun8hcsXHondszPPBEdcC68szw7vUKg==",
+    "Avalonia/12.1.6": {
+      "sha512": "juogZu7ASS2KMtSqOMa8nGJ5I1Ile/3PG3JR+tD73liDr30qgilEsqNVQw3KIXJvuFc9m3Mf9NzGWc3sQvnlXA==",
       "type": "package",
-      "path": "avalonia/12.1.2",
+      "path": "avalonia/12.1.6",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -951,7 +952,7 @@
         "analyzers/dotnet/cs/Avalonia.Analyzers.CodeFixes.CSharp.dll",
         "analyzers/dotnet/cs/Avalonia.Analyzers.VisualBasic.dll",
         "analyzers/dotnet/cs/Avalonia.Generators.dll",
-        "avalonia.12.1.2.nupkg.sha512",
+        "avalonia.12.1.6.nupkg.sha512",
         "avalonia.nuspec",
         "build/Avalonia.Generators.props",
         "build/Avalonia.props",
@@ -1100,16 +1101,16 @@
         "tools/netstandard2.0/runtimeconfig.json"
       ]
     },
-    "Avalonia.Desktop/12.1.2": {
-      "sha512": "ghG7UVnLVhCyWm/74xh24gAkXgEZ41oJTUr7c0VI9BiVSqhpukvU5vm8l8ZY35BZX8VPx1YtXUI1+VbhDTOLMw==",
+    "Avalonia.Desktop/12.1.6": {
+      "sha512": "X3RzMxlfl6IB/CA+X2JO+CrJHUdFIjzZiIbLyy0Xy52NYvvrb1nCVlv9TOTo5JpBL832CvPBp7BAgR9UrLlPpA==",
       "type": "package",
-      "path": "avalonia.desktop/12.1.2",
+      "path": "avalonia.desktop/12.1.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "_manifest/cyclonedx/bom.cdx.json",
-        "avalonia.desktop.12.1.2.nupkg.sha512",
+        "avalonia.desktop.12.1.6.nupkg.sha512",
         "avalonia.desktop.nuspec",
         "lib/net10.0/Avalonia.Desktop.dll",
         "lib/net10.0/Avalonia.Desktop.xml",
@@ -1134,16 +1135,16 @@
         "lib/net8.0/Avalonia.Fonts.Inter.xml"
       ]
     },
-    "Avalonia.FreeDesktop/12.1.2": {
-      "sha512": "RJqKF7djK/lyDBdj24+HKELGe+7I/86NIA57aeiod5k340svbcb9hs1RYkIF8Nga4Xa2Jd/Pzxpkmvdjb1ASiw==",
+    "Avalonia.FreeDesktop/12.1.6": {
+      "sha512": "sE7bo4++6/ReFFYhRVXPhaHIPSN/yXPOBBzGBddorWD9RzIXP0iA4mkzcrrSkpwQfcsJUgseCxAydWt0hhMyig==",
       "type": "package",
-      "path": "avalonia.freedesktop/12.1.2",
+      "path": "avalonia.freedesktop/12.1.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "_manifest/cyclonedx/bom.cdx.json",
-        "avalonia.freedesktop.12.1.2.nupkg.sha512",
+        "avalonia.freedesktop.12.1.6.nupkg.sha512",
         "avalonia.freedesktop.nuspec",
         "lib/net10.0/Avalonia.FreeDesktop.dll",
         "lib/net10.0/Avalonia.FreeDesktop.xml",
@@ -1151,16 +1152,16 @@
         "lib/net8.0/Avalonia.FreeDesktop.xml"
       ]
     },
-    "Avalonia.FreeDesktop.AtSpi/12.1.2": {
-      "sha512": "632PfHnqe7OkzStmDOW2ghXfCcTapGhT46HZGMMOIZFr+I0biyxUk7felBQwNzEk5LJ54y4VfIoiWKTgZK8FnA==",
+    "Avalonia.FreeDesktop.AtSpi/12.1.6": {
+      "sha512": "K37YcbSy+dDmLIjuWU7X5Y3oGPxIsG2H7aWNQnwzlF1mWfbNm5B0inAXpShwCc3m8eVxqyA0gCSoXnhbWEucMw==",
       "type": "package",
-      "path": "avalonia.freedesktop.atspi/12.1.2",
+      "path": "avalonia.freedesktop.atspi/12.1.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "_manifest/cyclonedx/bom.cdx.json",
-        "avalonia.freedesktop.atspi.12.1.2.nupkg.sha512",
+        "avalonia.freedesktop.atspi.12.1.6.nupkg.sha512",
         "avalonia.freedesktop.atspi.nuspec",
         "lib/net10.0/Avalonia.FreeDesktop.AtSpi.dll",
         "lib/net10.0/Avalonia.FreeDesktop.AtSpi.xml",
@@ -1168,16 +1169,16 @@
         "lib/net8.0/Avalonia.FreeDesktop.AtSpi.xml"
       ]
     },
-    "Avalonia.HarfBuzz/12.1.2": {
-      "sha512": "CqYTMnOLuAXjGldTEMdEf5/ozMY1z5ZshpE4YF0i2s2o4ycsYq855BD/eQS0iBt5PbjtlJgk8njILrBwW0HteQ==",
+    "Avalonia.HarfBuzz/12.1.6": {
+      "sha512": "Y+0vG5+ObryzJl/fs1Vc25E7raOvW+inDkLU7QDxmdXgsxUq3wVx5S/k35vYn2fB9gWtFdGwSrEfLdOQev39Ag==",
       "type": "package",
-      "path": "avalonia.harfbuzz/12.1.2",
+      "path": "avalonia.harfbuzz/12.1.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "_manifest/cyclonedx/bom.cdx.json",
-        "avalonia.harfbuzz.12.1.2.nupkg.sha512",
+        "avalonia.harfbuzz.12.1.6.nupkg.sha512",
         "avalonia.harfbuzz.nuspec",
         "lib/net10.0/Avalonia.HarfBuzz.dll",
         "lib/net10.0/Avalonia.HarfBuzz.xml",
@@ -1185,16 +1186,16 @@
         "lib/net8.0/Avalonia.HarfBuzz.xml"
       ]
     },
-    "Avalonia.Native/12.1.2": {
-      "sha512": "Co60A3FhDiCR022en90e/nUJqn2GtYal353cSUB0lWAd0qb/AuVRdScz9i0QCyglYw+PBfUXSP+9OfI2XvnfCg==",
+    "Avalonia.Native/12.1.6": {
+      "sha512": "c9+4tsRB8K2bKd9wvhb9jY1vD1ItV1SVYpN6valUtOg/Pu6/AlqRKzLo8zyv8mwcqFZzgtp+WunareH//6+VUQ==",
       "type": "package",
-      "path": "avalonia.native/12.1.2",
+      "path": "avalonia.native/12.1.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "_manifest/cyclonedx/bom.cdx.json",
-        "avalonia.native.12.1.2.nupkg.sha512",
+        "avalonia.native.12.1.6.nupkg.sha512",
         "avalonia.native.nuspec",
         "lib/net10.0/Avalonia.Native.dll",
         "lib/net10.0/Avalonia.Native.xml",
@@ -1203,16 +1204,16 @@
         "runtimes/osx/native/libAvaloniaNative.dylib"
       ]
     },
-    "Avalonia.Remote.Protocol/12.1.2": {
-      "sha512": "DdLTe9xKXxxfRcXmUw1trXZpBpz1YiZYWXx0DfMVPFAnkCszKsHLi67kaZfGJqtfQq2EySKd2qgRYX2QYkSxcg==",
+    "Avalonia.Remote.Protocol/12.1.6": {
+      "sha512": "55fcjPpzkzPaSSMczUjpKHKWcuJo6dJHHkLXgT8nMP80ijYASzdPdf86173R7CqPitw8E8nJ229Jqpu/EyUVow==",
       "type": "package",
-      "path": "avalonia.remote.protocol/12.1.2",
+      "path": "avalonia.remote.protocol/12.1.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "_manifest/cyclonedx/bom.cdx.json",
-        "avalonia.remote.protocol.12.1.2.nupkg.sha512",
+        "avalonia.remote.protocol.12.1.6.nupkg.sha512",
         "avalonia.remote.protocol.nuspec",
         "lib/net10.0/Avalonia.Remote.Protocol.dll",
         "lib/net10.0/Avalonia.Remote.Protocol.xml",
@@ -1222,16 +1223,16 @@
         "lib/netstandard2.0/Avalonia.Remote.Protocol.xml"
       ]
     },
-    "Avalonia.Skia/12.1.2": {
-      "sha512": "x0TDDdZgNepbxRd6gSQyv3A/hHoVJk3kYqjRa1baI43XPGPuO87lArf4DRKAERgWUxUp1ad28aTvVsE3x0JM0g==",
+    "Avalonia.Skia/12.1.6": {
+      "sha512": "6Ampu5kpbuhx/tk2aw9DF664q+fOjMjpsF6N76/lulCt/g+Tkoz4rr8dk9lsmHvOI9KQ/dmERO9MrJ5/mVDwlQ==",
       "type": "package",
-      "path": "avalonia.skia/12.1.2",
+      "path": "avalonia.skia/12.1.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "_manifest/cyclonedx/bom.cdx.json",
-        "avalonia.skia.12.1.2.nupkg.sha512",
+        "avalonia.skia.12.1.6.nupkg.sha512",
         "avalonia.skia.nuspec",
         "lib/net10.0/Avalonia.Skia.dll",
         "lib/net10.0/Avalonia.Skia.xml",
@@ -1239,16 +1240,16 @@
         "lib/net8.0/Avalonia.Skia.xml"
       ]
     },
-    "Avalonia.Themes.Fluent/12.1.2": {
-      "sha512": "EKw1PzlIfqB8n0+yGuHThR9cUEiqZYj0EHYp89jrTwSuudu8pji6I4SGe1UmdwJWdgWf+kuss8T7KT+0wsUyow==",
+    "Avalonia.Themes.Fluent/12.1.6": {
+      "sha512": "CafSFU8q6I2ij7VRWy3D5qw3ObrDEOXRqIvFqVuEh7vqk1EC9ob94KYRmbHLZRsyj3Ob2xsF/tgcF5YF2uiKzQ==",
       "type": "package",
-      "path": "avalonia.themes.fluent/12.1.2",
+      "path": "avalonia.themes.fluent/12.1.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "_manifest/cyclonedx/bom.cdx.json",
-        "avalonia.themes.fluent.12.1.2.nupkg.sha512",
+        "avalonia.themes.fluent.12.1.6.nupkg.sha512",
         "avalonia.themes.fluent.nuspec",
         "lib/net10.0/Avalonia.Themes.Fluent.dll",
         "lib/net10.0/Avalonia.Themes.Fluent.xml",
@@ -1256,16 +1257,16 @@
         "lib/net8.0/Avalonia.Themes.Fluent.xml"
       ]
     },
-    "Avalonia.Win32/12.1.2": {
-      "sha512": "MjHc5aKNs7Hp/fiX13wTQ3pg+kG9lh+NfqSQGx6/SkfvdO1Hbmribk7Bt0pwFTxcJ6HGlzwGKp1Ur3Ib/tv0ew==",
+    "Avalonia.Win32/12.1.6": {
+      "sha512": "AZjU48WnzqNoi79bf8wHA7mxfgEi3MEv1vyn7N7HQpaegCnwh7TJ5jwrEbcwNqjP2JviXl/1H7CQ6tPbrgNw3A==",
       "type": "package",
-      "path": "avalonia.win32/12.1.2",
+      "path": "avalonia.win32/12.1.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "_manifest/cyclonedx/bom.cdx.json",
-        "avalonia.win32.12.1.2.nupkg.sha512",
+        "avalonia.win32.12.1.6.nupkg.sha512",
         "avalonia.win32.nuspec",
         "lib/net10.0/Avalonia.Win32.Automation.dll",
         "lib/net10.0/Avalonia.Win32.Automation.xml",
@@ -1277,16 +1278,16 @@
         "lib/net8.0/Avalonia.Win32.xml"
       ]
     },
-    "Avalonia.X11/12.1.2": {
-      "sha512": "wtCAY9k90yrvhzKmesDGGFxYHsgejmLaR7HY36A4VYJ+E1R8AguNZc3hFaVKywnQLpf/eLhAwQWUxoNVFu9h/w==",
+    "Avalonia.X11/12.1.6": {
+      "sha512": "sZbD5MAVBbeXqNZ8uBLg6p38uen+nNTWUZPJLPA5NSKbNrBT9Yg9lbqk24btEGsuLs4Uqqj3+C5Pa5oD0d2iVg==",
       "type": "package",
-      "path": "avalonia.x11/12.1.2",
+      "path": "avalonia.x11/12.1.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "_manifest/cyclonedx/bom.cdx.json",
-        "avalonia.x11.12.1.2.nupkg.sha512",
+        "avalonia.x11.12.1.6.nupkg.sha512",
         "avalonia.x11.nuspec",
         "lib/net10.0/Avalonia.X11.dll",
         "lib/net10.0/Avalonia.X11.xml",
@@ -1531,10 +1532,10 @@
         "microcom.runtime.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore/10.0.4": {
-      "sha512": "kzTsfFK2GCytp6DDTfQOmxPU4gbGdrIlP7PxrxF3ESNLtfXrC8BoUVZENBN2WORlZPAD7CVX6AYIglgkpXQooA==",
+    "Microsoft.EntityFrameworkCore/10.0.12": {
+      "sha512": "e7OrVN8U5yr4kuwdTHWBHGVQIVsGfMkAr0Ej1/BnrS989Q0XBVANpIzNZ2bc1GvMZ0/XwMt5InTnmKskxGy99Q==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore/10.0.4",
+      "path": "microsoft.entityframeworkcore/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1543,14 +1544,14 @@
         "buildTransitive/net10.0/Microsoft.EntityFrameworkCore.props",
         "lib/net10.0/Microsoft.EntityFrameworkCore.dll",
         "lib/net10.0/Microsoft.EntityFrameworkCore.xml",
-        "microsoft.entityframeworkcore.10.0.4.nupkg.sha512",
+        "microsoft.entityframeworkcore.10.0.12.nupkg.sha512",
         "microsoft.entityframeworkcore.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Abstractions/10.0.4": {
-      "sha512": "qDcJqCfN1XYyX0ID/Hd9/kQTRvlia8S+Yuwyl9uFhBIKnOCbl9WMdGQCzbZUKbkpkfvf3P9CDdXsnxHyE3O0Aw==",
+    "Microsoft.EntityFrameworkCore.Abstractions/10.0.12": {
+      "sha512": "kDrux7T6C3V/YYYe2LXr7x6AEsVyq5Y2YoTE9er1SwbDtap3z1g8RgxNh5eKQVyB4T+DKvBBJ4Ezd/VZzJQJZg==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.abstractions/10.0.4",
+      "path": "microsoft.entityframeworkcore.abstractions/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1558,21 +1559,21 @@
         "PACKAGE.md",
         "lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
         "lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.xml",
-        "microsoft.entityframeworkcore.abstractions.10.0.4.nupkg.sha512",
+        "microsoft.entityframeworkcore.abstractions.10.0.12.nupkg.sha512",
         "microsoft.entityframeworkcore.abstractions.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Analyzers/10.0.4": {
-      "sha512": "pQeMHCyD3yTtCEGnHV4VsgKUvrESo3MR5mnh8sgQ1hWYmI1YFsUutDowBIxkobeWRtaRmBqQAtF7XQFW6FWuNA==",
+    "Microsoft.EntityFrameworkCore.Analyzers/10.0.12": {
+      "sha512": "Kd4o2oO1A6dfKxjz5LS16QyLtpCFTUiFWwmBABETAXRsSImBdRdWeKjSgbbRhAMiV3a3/nWr95ZtzClT4uaADQ==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.analyzers/10.0.4",
+      "path": "microsoft.entityframeworkcore.analyzers/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll",
         "docs/PACKAGE.md",
-        "microsoft.entityframeworkcore.analyzers.10.0.4.nupkg.sha512",
+        "microsoft.entityframeworkcore.analyzers.10.0.12.nupkg.sha512",
         "microsoft.entityframeworkcore.analyzers.nuspec"
       ]
     },
@@ -1591,10 +1592,10 @@
         "microsoft.entityframeworkcore.relational.nuspec"
       ]
     },
-    "Microsoft.Extensions.Caching.Abstractions/10.0.4": {
-      "sha512": "uDRooaV6N3WZ0kdlNPMB68/MdGn/in1Fs7Db7DnIm85RBTPy4P321WO+daAImiYpH5dekjNggDqy1N44WaIlMA==",
+    "Microsoft.Extensions.Caching.Abstractions/10.0.12": {
+      "sha512": "sI3A6MUAyZwccLnwq0cXuRmC3WBtXieimBWafXSfhRJ4jnM2uGVXrqImDDVyW27u4vVaTOGlJxNJd8d1FGvCNQ==",
       "type": "package",
-      "path": "microsoft.extensions.caching.abstractions/10.0.4",
+      "path": "microsoft.extensions.caching.abstractions/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1615,15 +1616,15 @@
         "lib/net9.0/Microsoft.Extensions.Caching.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.xml",
-        "microsoft.extensions.caching.abstractions.10.0.4.nupkg.sha512",
+        "microsoft.extensions.caching.abstractions.10.0.12.nupkg.sha512",
         "microsoft.extensions.caching.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Caching.Memory/10.0.4": {
-      "sha512": "CLLussNUMdSbyJOu4VBF7sqskHGB/5N1EcFzrqG/HsPATN8fCRUcfp0qns1VwkxKHwxrtYCh5FKe+kM81Q1PHA==",
+    "Microsoft.Extensions.Caching.Memory/10.0.12": {
+      "sha512": "fhC3DHcBcFF4bXvHIxFtXJYNut7q7ZItqNFcgWfrIgmpVImlcEKNHhE7ztpNSPJYMHYYStS5QGND2I5mC26yeA==",
       "type": "package",
-      "path": "microsoft.extensions.caching.memory/10.0.4",
+      "path": "microsoft.extensions.caching.memory/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1644,7 +1645,7 @@
         "lib/net9.0/Microsoft.Extensions.Caching.Memory.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Memory.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Caching.Memory.xml",
-        "microsoft.extensions.caching.memory.10.0.4.nupkg.sha512",
+        "microsoft.extensions.caching.memory.10.0.12.nupkg.sha512",
         "microsoft.extensions.caching.memory.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -1678,10 +1679,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection/10.0.4": {
-      "sha512": "NkvJ8aSr3AG30yabjv7ZWwTG/wq5OElNTlNq39Ok2HSEF3TIwAc1f1xnTJlR/GuoJmEgkfT7WBO9YbSXRk41+g==",
+    "Microsoft.Extensions.DependencyInjection/10.0.12": {
+      "sha512": "lXyK2O5GoYvfxW8eCFcD16JFbcoSTM1sJkAM0UHS1jZyl9NYMW64Tqm6OQFT0IDBjZi+xHt95/Zg+nxZhGFhZg==",
       "type": "package",
-      "path": "microsoft.extensions.dependencyinjection/10.0.4",
+      "path": "microsoft.extensions.dependencyinjection/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1704,15 +1705,15 @@
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.xml",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.xml",
-        "microsoft.extensions.dependencyinjection.10.0.4.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.10.0.12.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.4": {
-      "sha512": "SIe9zlVQJecnk/DTmevIcl6+aEDYhoVLc2eG2AKwVeNEC8CSyxHAbh4lf0xtHq9JUum0vVTEByGNTK+b6oihTQ==",
+    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.12": {
+      "sha512": "9/qymSh7hVDMGTGwrLz8MRp5zRyXy9adGDOs4HwRdnLil3oZGYuWeZjbmHgCQ9BL1qBroVfgUK3U/nb61617Cw==",
       "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.4",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1735,15 +1736,15 @@
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.10.0.4.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.10.0.12.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Logging/10.0.4": {
-      "sha512": "S8+6fCuMOhJZGk8sGFtOy3VsF9mk9x4UOL59GM91REiA/fmCDjunKKIw4RmStG87qyXPfxelDJf2pXIbTuaBdw==",
+    "Microsoft.Extensions.Logging/10.0.12": {
+      "sha512": "6I46fTPfgYkrjRYfRXbho9WOvOelTnNjWuZws/hzGHDASH1LEJeA4VKK9k3wJvido8o7jJSB5WkMTonX7HM1bA==",
       "type": "package",
-      "path": "microsoft.extensions.logging/10.0.4",
+      "path": "microsoft.extensions.logging/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1766,15 +1767,15 @@
         "lib/netstandard2.0/Microsoft.Extensions.Logging.xml",
         "lib/netstandard2.1/Microsoft.Extensions.Logging.dll",
         "lib/netstandard2.1/Microsoft.Extensions.Logging.xml",
-        "microsoft.extensions.logging.10.0.4.nupkg.sha512",
+        "microsoft.extensions.logging.10.0.12.nupkg.sha512",
         "microsoft.extensions.logging.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Logging.Abstractions/10.0.4": {
-      "sha512": "PDMMt7fvBatv6hcxxyJtXIzSwn7Dy00W6I2vDAOTYrQqNM2dF5A2L9n0uMzdPz2IPoNZWkAmYjoOCEdDLq0i4w==",
+    "Microsoft.Extensions.Logging.Abstractions/10.0.12": {
+      "sha512": "+24lC4plfbEDNfLAdTV/SWKS7dW+16X4HdydO3R++134kSNTzcbYA4KpR1Hdh6uWisB8Za3AzwyOn+K+NxWIug==",
       "type": "package",
-      "path": "microsoft.extensions.logging.abstractions/10.0.4",
+      "path": "microsoft.extensions.logging.abstractions/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1838,15 +1839,15 @@
         "lib/net9.0/Microsoft.Extensions.Logging.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "microsoft.extensions.logging.abstractions.10.0.4.nupkg.sha512",
+        "microsoft.extensions.logging.abstractions.10.0.12.nupkg.sha512",
         "microsoft.extensions.logging.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Options/10.0.4": {
-      "sha512": "kRxa2Zjzhg/ohh7EklpqQpBIcyQnC3meWxCcpZBn+0QWy/fY1DmDd45JiW8Vyrpj2J1RDtau5yRHiLZS/AoxUw==",
+    "Microsoft.Extensions.Options/10.0.12": {
+      "sha512": "TDYD33TSRpXKZWlmTXNlj5kCihxatmv2Ec1u6C+bMYLphCS7PoSLE9Pjd/nunDoE7yETk+LLKjVJX78HYtWjpA==",
       "type": "package",
-      "path": "microsoft.extensions.options/10.0.4",
+      "path": "microsoft.extensions.options/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1884,15 +1885,15 @@
         "lib/netstandard2.0/Microsoft.Extensions.Options.xml",
         "lib/netstandard2.1/Microsoft.Extensions.Options.dll",
         "lib/netstandard2.1/Microsoft.Extensions.Options.xml",
-        "microsoft.extensions.options.10.0.4.nupkg.sha512",
+        "microsoft.extensions.options.10.0.12.nupkg.sha512",
         "microsoft.extensions.options.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Primitives/10.0.4": {
-      "sha512": "lABYqiRH9HgYJsjzO3W7+cucUwWXhEkiyrRylANdIubnzcESlkIsLowXpQ4E+sc7kjMLbk1hk5oxw4qTKowTEg==",
+    "Microsoft.Extensions.Primitives/10.0.12": {
+      "sha512": "dYfCLR52UA+3DL7C4I/pvSaRPkNqxrUAQmbFL2u0zvYKKzqgrFCJl08Df+F1aYc8leu9JvpC9bsURUdpExcBXQ==",
       "type": "package",
-      "path": "microsoft.extensions.primitives/10.0.4",
+      "path": "microsoft.extensions.primitives/10.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1913,7 +1914,7 @@
         "lib/net9.0/Microsoft.Extensions.Primitives.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Primitives.xml",
-        "microsoft.extensions.primitives.10.0.4.nupkg.sha512",
+        "microsoft.extensions.primitives.10.0.12.nupkg.sha512",
         "microsoft.extensions.primitives.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -2226,29 +2227,29 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "Avalonia >= 12.1.2",
-      "Avalonia.Desktop >= 12.1.2",
+      "Avalonia >= 12.1.6",
+      "Avalonia.Desktop >= 12.1.6",
       "Avalonia.Fonts.Inter >= 12.1.2",
-      "Avalonia.Themes.Fluent >= 12.1.2",
+      "Avalonia.Themes.Fluent >= 12.1.6",
       "AvaloniaUI.DiagnosticsSupport >= 2.2.3",
       "CommunityToolkit.Mvvm >= 8.4.2",
       "ConsoleApp1 >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "/home/ruben/.nuget/packages/": {}
+    "C:\\Users\\Ruben\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ruben/Projects_RB/ConsoleApp1/AirportSystem.UI/AirportSystem.UI.csproj",
+      "projectUniqueName": "C:\\Users\\Ruben\\Proyects\\AirportSystem\\AirportSystem.UI\\AirportSystem.UI.csproj",
       "projectName": "AirportSystem.UI",
-      "projectPath": "/home/ruben/Projects_RB/ConsoleApp1/AirportSystem.UI/AirportSystem.UI.csproj",
-      "packagesPath": "/home/ruben/.nuget/packages/",
-      "outputPath": "/home/ruben/Projects_RB/ConsoleApp1/AirportSystem.UI/obj/",
+      "projectPath": "C:\\Users\\Ruben\\Proyects\\AirportSystem\\AirportSystem.UI\\AirportSystem.UI.csproj",
+      "packagesPath": "C:\\Users\\Ruben\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ruben\\Proyects\\AirportSystem\\AirportSystem.UI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/ruben/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Ruben\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -2258,10 +2259,11 @@
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/ConsoleApp1.csproj": {
-              "projectPath": "/home/ruben/Projects_RB/ConsoleApp1/AirportSystem/ConsoleApp1.csproj"
+            "C:\\Users\\Ruben\\Proyects\\AirportSystem\\AirportSystem\\ConsoleApp1.csproj": {
+              "projectPath": "C:\\Users\\Ruben\\Proyects\\AirportSystem\\AirportSystem\\ConsoleApp1.csproj"
             }
           }
         }
@@ -2276,19 +2278,20 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "10.0.400"
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Avalonia": {
             "target": "Package",
-            "version": "[12.1.2, )"
+            "version": "[12.1.6, )"
           },
           "Avalonia.Desktop": {
             "target": "Package",
-            "version": "[12.1.2, )"
+            "version": "[12.1.6, )"
           },
           "Avalonia.Fonts.Inter": {
             "target": "Package",
@@ -2296,7 +2299,7 @@
           },
           "Avalonia.Themes.Fluent": {
             "target": "Package",
-            "version": "[12.1.2, )"
+            "version": "[12.1.6, )"
           },
           "AvaloniaUI.DiagnosticsSupport": {
             "target": "Package",
@@ -2318,18 +2321,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[10.0.12, 10.0.12]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.112/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.403/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

@@ -18,6 +18,18 @@ namespace AirportSystem.Services
         public List<Passenger> GetAllPassengers() => _passengers;
         public List<Booking> GetAllBookings() => _bookings;
 
+        public void LoadData(
+            IEnumerable<Flight> flights,
+            IEnumerable<Passenger> passengers,
+            IEnumerable<Booking> bookings)
+        {
+            _flights = flights.ToList();
+            _passengers = passengers.ToList();
+            _bookings = bookings.ToList();
+            _nextPassengerId = _passengers.Count == 0 ? 1 : _passengers.Max(p => p.Id) + 1;
+            _nextBookingId = _bookings.Count == 0 ? 1 : _bookings.Max(b => b.BookingId) + 1;
+        }
+
         public void AddFlight(Flight flight)
         {
             if (_flights.Any(f => f.FlightNumber == flight.FlightNumber))
