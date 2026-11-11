@@ -8,7 +8,21 @@ namespace AirportSystem.Utilities
 {
     public static class DataStorage
     {
-        private static readonly string _filePath = "airport_data.json";
+        // Ruta estable junto al ejecutable: no depende de la carpeta desde la que se lance la app.
+        private static readonly string _filePath =
+            Path.Combine(AppContext.BaseDirectory, "airport_data.json");
+
+        public static string FilePath => _filePath;
+
+        private static string GetLoadPath()
+        {
+            if (File.Exists(_filePath))
+                return _filePath;
+
+            // Compatibilidad con datos guardados por versiones anteriores en la carpeta actual.
+            var legacyPath = Path.Combine(Directory.GetCurrentDirectory(), "airport_data.json");
+            return File.Exists(legacyPath) ? legacyPath : _filePath;
+        }
 
         public static void SaveData(AirportService service)
         {
@@ -31,10 +45,11 @@ namespace AirportSystem.Utilities
 
         public static (List<Flight>? flights, List<Passenger>? passengers, List<Booking>? bookings) LoadData()
         {
-            if (!File.Exists(_filePath))
+            var loadPath = GetLoadPath();
+            if (!File.Exists(loadPath))
                 return (null, null, null);
 
-            string json = File.ReadAllText(_filePath);
+            string json = File.ReadAllText(loadPath);
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true

@@ -284,8 +284,15 @@ public partial class MainViewModel : ViewModelBase
             PassengerPhone.Trim());
 
         RefreshPassengers();
-        SelectedPassenger = Passengers.FirstOrDefault(p => p.Id == passenger.Id);
-        SetStatus($"Pasajero registrado con ID {passenger.Id}: {passenger.FullName}.");
+        MovePassengerToTop(passenger);
+        SelectedPassenger = passenger;
+
+        var saved = TrySave();
+        SetStatus(saved
+            ? $"Pasajero \"{passenger.FullName}\" registrado con ID {passenger.Id}. Aparece primero y se guardó."
+            : $"Pasajero \"{passenger.FullName}\" registrado con ID {passenger.Id}. Aparece primero, pero no se pudo guardar.",
+            error: !saved);
+
         ClearPassengerForm();
     }
 
@@ -310,21 +317,28 @@ public partial class MainViewModel : ViewModelBase
             return;
         }
 
+        var flightNumber = SelectedFlight.FlightNumber;
+        var seat = SelectedSeat;
         var (success, message, bookingId) = _service.BookTicket(
-            SelectedFlight.FlightNumber,
+            flightNumber,
             SelectedPassenger.Id,
-            SelectedSeat);
+            seat);
 
-        SetStatus(success
-            ? $"Reserva confirmada. ID: {bookingId}, vuelo {SelectedFlight.FlightNumber}, asiento {SelectedSeat}."
-            : message, error: !success);
-
-        if (success)
+        if (!success)
         {
-            RefreshBookings();
-            RefreshFlights();
-            SelectedBooking = Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+            SetStatus(message, error: true);
+            return;
         }
+
+        RefreshBookings();
+        RefreshFlights();
+        SelectedBooking = Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+
+        var saved = TrySave();
+        SetStatus(saved
+            ? $"Reserva confirmada y guardada. ID: {bookingId}, vuelo {flightNumber}, asiento {seat}."
+            : $"Reserva confirmada. ID: {bookingId}, vuelo {flightNumber}, asiento {seat}, pero no se pudo guardar.",
+            error: !saved);
     }
 
     [RelayCommand]
@@ -338,13 +352,21 @@ public partial class MainViewModel : ViewModelBase
 
         var bookingId = SelectedBooking.BookingId;
         var ok = _service.CheckIn(bookingId);
-        SetStatus(ok
-            ? $"Check-in realizado para la reserva {bookingId}."
-            : "No se pudo hacer check-in (reserva inexistente, ya registrada o vuelo cancelado).",
-            error: !ok);
 
         RefreshBookings();
         SelectedBooking = Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+
+        if (!ok)
+        {
+            SetStatus("No se pudo hacer check-in (reserva inexistente, ya registrada o vuelo cancelado).", error: true);
+            return;
+        }
+
+        var saved = TrySave();
+        SetStatus(saved
+            ? $"Check-in realizado y guardado para la reserva {bookingId}."
+            : $"Check-in realizado para la reserva {bookingId}, pero no se pudo guardar.",
+            error: !saved);
     }
 
     [RelayCommand]
@@ -358,13 +380,21 @@ public partial class MainViewModel : ViewModelBase
 
         var bookingId = SelectedBooking.BookingId;
         var ok = _service.CancelBooking(bookingId);
-        SetStatus(ok
-            ? $"Reserva {bookingId} cancelada y asiento liberado."
-            : "No se encontró la reserva.",
-            error: !ok);
 
         RefreshBookings();
         RefreshFlights();
+
+        if (!ok)
+        {
+            SetStatus("No se encontró la reserva.", error: true);
+            return;
+        }
+
+        var saved = TrySave();
+        SetStatus(saved
+            ? $"Reserva {bookingId} cancelada, asiento liberado y cambios guardados."
+            : $"Reserva {bookingId} cancelada, pero no se pudo guardar.",
+            error: !saved);
     }
 
     [RelayCommand]
@@ -380,14 +410,19 @@ public partial class MainViewModel : ViewModelBase
         _service.AdvanceTime(TimeSpan.FromHours(hours));
         RefreshFlights();
         RefreshBookings();
-        SetStatus($"Tiempo avanzado {hours} hora(s). Estados de vuelo actualizados.");
+
+        var saved = TrySave();
+        SetStatus(saved
+            ? $"Tiempo avanzado {hours} hora(s). Estados de vuelo actualizados y guardados."
+            : $"Tiempo avanzado {hours} hora(s), pero no se pudieron guardar los cambios.",
+            error: !saved);
     }
 
     [RelayCommand]
     private void Save()
     {
         if (TrySave())
-            SetStatus("Datos guardados en airport_data.json.");
+            SetStatus($"Datos guardados en {DataStorage.FilePath}.");
     }
 
     private bool TrySave()
@@ -411,6 +446,16 @@ public partial class MainViewModel : ViewModelBase
         {
             Flights.RemoveAt(index);
             Flights.Insert(0, flight);
+        }
+    }
+
+    private void MovePassengerToTop(Passenger passenger)
+    {
+        var index = Passengers.IndexOf(passenger);
+        if (index > 0)
+        {
+            Passengers.RemoveAt(index);
+            Passengers.Insert(0, passenger);
         }
     }
 

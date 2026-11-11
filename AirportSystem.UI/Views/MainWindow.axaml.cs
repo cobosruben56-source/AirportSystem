@@ -11,9 +11,19 @@ public partial class MainWindow : Window
 
     private void OnFlightsSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
+        ScrollSelectedIntoView(sender);
+    }
+
+    private void OnPassengersSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        ScrollSelectedIntoView(sender);
+    }
+
+    private static void ScrollSelectedIntoView(object? sender)
+    {
         if (sender is ListBox listBox && listBox.SelectedItem is not null)
         {
-            // Garantiza que el vuelo recién registrado/ seleccionado siempre quede visible.
+            // Garantiza que el elemento recién registrado/seleccionado siempre quede visible.
             listBox.ScrollIntoView(listBox.SelectedItem);
         }
     }

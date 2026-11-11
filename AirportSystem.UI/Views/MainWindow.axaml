@@ -208,8 +208,11 @@
                 <TextBlock Grid.Column="3" Text="Teléfono" Classes="label"/>
               </Grid>
               <ListBox Grid.Row="1"
+                       x:Name="PassengersList"
                        ItemsSource="{Binding Passengers}"
-                       SelectedItem="{Binding SelectedPassenger}">
+                       SelectedItem="{Binding SelectedPassenger}"
+                       AutoScrollToSelectedItem="True"
+                       SelectionChanged="OnPassengersSelectionChanged">
                 <ListBox.ItemTemplate>
                   <DataTemplate x:DataType="models:Passenger">
                     <Grid ColumnDefinitions="50,180,230,140">
@@ -236,10 +239,16 @@
                 <TextBox Text="{Binding PassengerEmail}" PlaceholderText="john@example.com"/>
                 <TextBlock Text="Teléfono" Classes="label"/>
                 <TextBox Text="{Binding PassengerPhone}" PlaceholderText="1234567890"/>
+                <TextBlock Text="{Binding StatusMessage}"
+                           Foreground="{Binding StatusBrush}"
+                           FontWeight="SemiBold"
+                           TextWrapping="Wrap"/>
                 <Button Content="Registrar pasajero"
                         Command="{Binding RegisterPassengerCommand}"
                         HorizontalAlignment="Left"
                         Margin="0,4,0,0"/>
+                <TextBlock Text="Los pasajeros se guardan automáticamente."
+                           Foreground="#6B7280" FontSize="12"/>
               </StackPanel>
             </Border>
           </ScrollViewer>
