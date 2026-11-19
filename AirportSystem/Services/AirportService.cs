@@ -151,6 +151,150 @@ namespace AirportSystem.Services
             }
         }
 
+        public bool DeleteBooking(int bookingId) => CancelBooking(bookingId);
+
+        public void UpdateFlight(string originalNumber, Flight updated)
+        {
+            var index = _flights.FindIndex(f => f.FlightNumber == originalNumber);
+            if (index < 0)
+                throw new Exception($"El vuelo {originalNumber} no existe.");
+
+            ValidateFlight(updated);
+            if (!string.Equals(originalNumber, updated.FlightNumber, StringComparison.Ordinal)
+                && _flights.Any(f => f.FlightNumber == updated.FlightNumber))
+                throw new Exception($"Ya existe un vuelo con el número {updated.FlightNumber}.");
+
+            var current = _flights[index];
+            var hasBookings = _bookings.Any(b => b.FlightNumber == originalNumber);
+            if (hasBookings)
+            {
+                // No se puede cambiar la distribución si hay asientos vendidos.
+                updated.SeatMap = current.SeatMap;
+                updated.TotalSeats = current.TotalSeats;
+            }
+            else if (updated.SeatMap.Count == 0)
+            {
+                throw new Exception("El vuelo debe tener asientos configurados.");
+            }
+
+            _flights[index] = updated;
+
+            if (!string.Equals(originalNumber, updated.FlightNumber, StringComparison.Ordinal))
+            {
+                foreach (var booking in _bookings.Where(b => b.FlightNumber == originalNumber))
+                    booking.FlightNumber = updated.FlightNumber;
+            }
+        }
+
+        public bool DeleteFlight(string flightNumber, out int bookingsRemoved)
+        {
+            var flight = _flights.FirstOrDefault(f => f.FlightNumber == flightNumber);
+            bookingsRemoved = 0;
+            if (flight is null)
+                return false;
+
+            bookingsRemoved = _bookings.RemoveAll(b => b.FlightNumber == flightNumber);
+            _flights.Remove(flight);
+            return true;
+        }
+
+        public void UpdatePassenger(Passenger updated)
+        {
+            if (string.IsNullOrWhiteSpace(updated.FirstName) || string.IsNullOrWhiteSpace(updated.LastName))
+                throw new Exception("El nombre y el apellido son obligatorios.");
+
+            var index = _passengers.FindIndex(p => p.Id == updated.Id);
+            if (index < 0)
+                throw new Exception($"El pasajero #{updated.Id} no existe.");
+
+            _passengers[index] = updated;
+        }
+
+        public bool DeletePassenger(int passengerId, out int bookingsRemoved)
+        {
+            var passenger = FindPassenger(passengerId);
+            bookingsRemoved = 0;
+            if (passenger is null)
+                return false;
+
+            var bookings = _bookings.Where(b => b.PassengerId == passengerId).ToList();
+            foreach (var booking in bookings)
+            {
+                var flight = _flights.FirstOrDefault(f => f.FlightNumber == booking.FlightNumber);
+                flight?.FreeSeat(booking.SeatNumber);
+                _bookings.Remove(booking);
+            }
+
+            _passengers.Remove(passenger);
+            bookingsRemoved = bookings.Count;
+            return true;
+        }
+
+        public (bool success, string message) UpdateBooking(
+            int bookingId, string flightNumber, int passengerId, string seatNumber)
+        {
+            var booking = _bookings.FirstOrDefault(b => b.BookingId == bookingId);
+            if (booking is null)
+                return (false, "La reserva no existe.");
+
+            var flight = _flights.FirstOrDefault(f => f.FlightNumber == flightNumber);
+            if (flight is null)
+                return (false, "El vuelo no existe.");
+
+            if (flight.Status == FlightStatus.Cancelled || flight.Status == FlightStatus.Arrived)
+                return (false, "Ese vuelo ya no admite reservas.");
+
+            if (FindPassenger(passengerId) is null)
+                return (false, "El pasajero no existe.");
+
+            if (!flight.SeatMap.ContainsKey(seatNumber))
+                return (false, "Ese asiento no existe en el vuelo.");
+
+            if (_bookings.Any(b => b.BookingId != bookingId
+                                   && b.FlightNumber == flightNumber
+                                   && b.SeatNumber == seatNumber))
+                return (false, "Ese asiento ya está ocupado por otra reserva.");
+
+            // El único caso en el que el asiento puede estar marcado como ocupado
+            // es cuando esta misma reserva se mantiene en vuelo y asiento.
+            var keepsSameSeat = booking.FlightNumber == flightNumber
+                                && booking.SeatNumber == seatNumber;
+            if (flight.SeatMap[seatNumber] && !keepsSameSeat)
+                return (false, "Ese asiento ya está ocupado.");
+
+            var previousFlight = _flights.FirstOrDefault(f => f.FlightNumber == booking.FlightNumber);
+            var changed = booking.FlightNumber != flightNumber
+                          || booking.PassengerId != passengerId
+                          || booking.SeatNumber != seatNumber;
+
+            previousFlight?.FreeSeat(booking.SeatNumber);
+            flight.BookSeat(seatNumber);
+
+            booking.FlightNumber = flightNumber;
+            booking.PassengerId = passengerId;
+            booking.SeatNumber = seatNumber;
+            if (changed)
+                booking.IsCheckedIn = false;
+
+            return (true, "Reserva actualizada.");
+        }
+
+        private static void ValidateFlight(Flight flight)
+        {
+            if (string.IsNullOrWhiteSpace(flight.FlightNumber))
+                throw new Exception("El número de vuelo es obligatorio.");
+            if (string.IsNullOrWhiteSpace(flight.Airline))
+                throw new Exception("La aerolínea es obligatoria.");
+            if (string.IsNullOrWhiteSpace(flight.Origin) || string.IsNullOrWhiteSpace(flight.Destination))
+                throw new Exception("El origen y el destino son obligatorios.");
+            if (flight.ArrivalTime <= flight.DepartureTime)
+                throw new Exception("La llegada debe ser posterior a la salida.");
+            if (flight.BasePrice < 0)
+                throw new Exception("El precio base no puede ser negativo.");
+            if (flight.Terminal <= 0)
+                throw new Exception("El terminal debe ser un número positivo.");
+        }
+
         public void SeedData()
         {
             var f1 = new Flight

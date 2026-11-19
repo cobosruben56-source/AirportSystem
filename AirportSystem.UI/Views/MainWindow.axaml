@@ -131,7 +131,7 @@
             <StackPanel Spacing="10">
               <Border Classes="card">
                 <StackPanel Spacing="8">
-                  <TextBlock Text="Registrar nuevo vuelo" Classes="title"/>
+                  <TextBlock Text="{Binding FlightFormTitle}" Classes="title"/>
                   <Grid ColumnDefinitions="115,*"
                         RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
                         RowSpacing="4" ColumnSpacing="8">
@@ -163,18 +163,30 @@
                     <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding NewTerminal}" PlaceholderText="1"/>
 
                     <TextBlock Grid.Row="9" Text="Filas de asientos" Classes="label"/>
-                    <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding NewRows}" PlaceholderText="10"/>
+                    <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding NewRows}"
+                             PlaceholderText="10" IsEnabled="{Binding CanChangeSeatLayout}"/>
 
                     <TextBlock Grid.Row="10" Text="Columnas" Classes="label"/>
-                    <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding NewColumns}" PlaceholderText="ABCDEF"/>
+                    <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding NewColumns}"
+                             PlaceholderText="ABCDEF" IsEnabled="{Binding CanChangeSeatLayout}"/>
                   </Grid>
                   <TextBlock Text="{Binding StatusMessage}"
                              Foreground="{Binding StatusBrush}"
                              FontWeight="SemiBold"
                              TextWrapping="Wrap"/>
-                  <Button Content="Registrar vuelo"
-                          Command="{Binding RegisterFlightCommand}"
-                          HorizontalAlignment="Left"/>
+                  <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Left">
+                    <Button Content="{Binding FlightActionText}"
+                            Command="{Binding RegisterFlightCommand}"
+                            Classes="accent"/>
+                    <Button Content="Editar seleccionado"
+                            Command="{Binding EditFlightCommand}"/>
+                    <Button Content="Cancelar edición"
+                            Command="{Binding CancelFlightEditCommand}"
+                            IsVisible="{Binding IsEditingFlight}"/>
+                    <Button Content="Eliminar seleccionado"
+                            Command="{Binding DeleteFlightCommand}"
+                            Background="#DC2626" Foreground="White"/>
+                  </StackPanel>
                 </StackPanel>
               </Border>
 
@@ -230,7 +242,7 @@
           <ScrollViewer Grid.Column="1">
             <Border Classes="card">
               <StackPanel Spacing="8">
-                <TextBlock Text="Registrar pasajero" Classes="title"/>
+                <TextBlock Text="{Binding PassengerFormTitle}" Classes="title"/>
                 <TextBlock Text="Nombre" Classes="label"/>
                 <TextBox Text="{Binding PassengerFirstName}" PlaceholderText="John"/>
                 <TextBlock Text="Apellido" Classes="label"/>
@@ -243,10 +255,19 @@
                            Foreground="{Binding StatusBrush}"
                            FontWeight="SemiBold"
                            TextWrapping="Wrap"/>
-                <Button Content="Registrar pasajero"
-                        Command="{Binding RegisterPassengerCommand}"
-                        HorizontalAlignment="Left"
-                        Margin="0,4,0,0"/>
+                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Left" Margin="0,4,0,0">
+                  <Button Content="{Binding PassengerActionText}"
+                          Command="{Binding RegisterPassengerCommand}"
+                          Classes="accent"/>
+                  <Button Content="Editar seleccionado"
+                          Command="{Binding EditPassengerCommand}"/>
+                  <Button Content="Cancelar edición"
+                          Command="{Binding CancelPassengerEditCommand}"
+                          IsVisible="{Binding IsEditingPassenger}"/>
+                  <Button Content="Eliminar seleccionado"
+                          Command="{Binding DeletePassengerCommand}"
+                          Background="#DC2626" Foreground="White"/>
+                </StackPanel>
                 <TextBlock Text="Los pasajeros se guardan automáticamente."
                            Foreground="#6B7280" FontSize="12"/>
               </StackPanel>
@@ -289,7 +310,11 @@
                         ItemsSource="{Binding AvailableSeats}"
                         SelectedItem="{Binding SelectedSeat}"
                         HorizontalAlignment="Stretch"/>
-              <Button Grid.Column="6" Content="Reservar"
+              <TextBlock Grid.Row="1" Grid.Column="1" IsVisible="{Binding IsEditingBooking}"
+                         Text="{Binding BookingFlightNumber}" Foreground="#6B7280" FontSize="12"/>
+              <TextBlock Grid.Row="1" Grid.Column="3" IsVisible="{Binding IsEditingBooking}"
+                         Text="{Binding BookingPassengerName}" Foreground="#6B7280" FontSize="12"/>
+              <Button Grid.Column="6" Content="{Binding BookingActionText}"
                       Command="{Binding BookTicketCommand}" Margin="8,0,0,0"/>
             </Grid>
           </Border>
@@ -321,7 +346,12 @@
 
           <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,10,0,0">
             <Button Content="Check-in" Command="{Binding CheckInCommand}"/>
+            <Button Content="Editar reserva" Command="{Binding EditBookingCommand}"/>
+            <Button Content="Cancelar edición" Command="{Binding CancelBookingEditCommand}"
+                    IsVisible="{Binding IsEditingBooking}"/>
             <Button Content="Cancelar reserva" Command="{Binding CancelBookingCommand}"/>
+            <Button Content="Eliminar reserva" Command="{Binding DeleteBookingCommand}"
+                    Background="#DC2626" Foreground="White"/>
           </StackPanel>
         </Grid>
       </TabItem>

@@ -1,0 +1,36 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AirportSystem.UI.Views.LoginWindow"
+        Title="Iniciar sesión"
+        Width="430" Height="340"
+        MinWidth="430" MinHeight="340"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen"
+        Icon="/Assets/avalonia-logo.ico"
+        KeyDown="OnKeyDown">
+
+  <Border Background="#F9FAFB" Padding="28">
+    <StackPanel Spacing="12" VerticalAlignment="Center">
+      <TextBlock Text="Sistema de Gestión Aeroportuaria"
+                 FontSize="20" FontWeight="SemiBold" Foreground="#111827"/>
+      <TextBlock Text="Inicia sesión para continuar" Foreground="#6B7280" Margin="0,0,0,8"/>
+
+      <TextBlock Text="Usuario" FontWeight="SemiBold" Foreground="#374151"/>
+      <TextBox x:Name="UserBox" PlaceholderText="Admin" Height="36"/>
+
+      <TextBlock Text="Contraseña" FontWeight="SemiBold" Foreground="#374151"/>
+      <TextBox x:Name="PasswordBox" PasswordChar="•" Height="36"/>
+
+      <TextBlock x:Name="ErrorText" Text="" Foreground="#DC2626"
+                 TextWrapping="Wrap" MinHeight="18"/>
+
+      <StackPanel Orientation="Horizontal" Spacing="10"
+                  HorizontalAlignment="Right" Margin="0,8,0,0">
+        <Button x:Name="CancelButton" Content="Cancelar" Width="100"
+                Click="OnCancelClick"/>
+        <Button x:Name="LoginButton" Content="Entrar" Width="100"
+                Classes="accent" Click="OnLoginClick"/>
+      </StackPanel>
+    </StackPanel>
+  </Border>
+</Window>

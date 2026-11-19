@@ -17,10 +17,26 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
+            // La ventana de login es la principal hasta que las credenciales
+            // sean correctas; entonces se sustituye por la ventana principal.
+            var login = new LoginWindow();
+            login.Authenticated += () =>
             {
-                DataContext = new MainViewModel(),
+                var viewModel = new MainViewModel();
+                var mainWindow = new MainWindow
+                {
+                    DataContext = viewModel
+                };
+
+                // El ViewModel pide confirmación desde la ventana, sin depender de Avalonia.
+                viewModel.Confirm = message => mainWindow.ShowConfirmAsync(message);
+
+                desktop.MainWindow = mainWindow;
+                mainWindow.Show();
+                login.Hide();
             };
+
+            desktop.MainWindow = login;
         }
 
         base.OnFrameworkInitializationCompleted();
