@@ -6,7 +6,7 @@
         MinWidth="430" MinHeight="340"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/avalonia-logo.png"
         KeyDown="OnKeyDown">
 
   <Border Background="#F9FAFB" Padding="28">

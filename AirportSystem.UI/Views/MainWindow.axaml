@@ -8,7 +8,7 @@
         d:DesignWidth="1180" d:DesignHeight="780"
         x:Class="AirportSystem.UI.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/avalonia-logo.png"
         Title="Sistema de Gestión Aeroportuaria"
         Width="1180" Height="780"
         MinWidth="900" MinHeight="600"

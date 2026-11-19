@@ -44,10 +44,29 @@ namespace AirportSystem.Utilities
                 return Path.GetFullPath(overridePath);
 
             var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            if (string.IsNullOrWhiteSpace(localAppData))
-                localAppData = AppContext.BaseDirectory;
+            if (!string.IsNullOrWhiteSpace(localAppData))
+                return Path.Combine(localAppData, "AirportSystem", FileName);
 
-            return Path.Combine(localAppData, "AirportSystem", FileName);
+            // En algunos entornos Linux (por ejemplo WSL) .NET devuelve una cadena
+            // vacia para LocalApplicationData. Resolvemos la ruta estandar a mano.
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            if (string.IsNullOrWhiteSpace(home))
+                home = Environment.GetEnvironmentVariable("HOME");
+
+            if (OperatingSystem.IsMacOS() && !string.IsNullOrWhiteSpace(home))
+                return Path.Combine(home, "Library", "Application Support", "AirportSystem", FileName);
+
+            if (!OperatingSystem.IsWindows())
+            {
+                var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+                if (!string.IsNullOrWhiteSpace(xdgDataHome))
+                    return Path.Combine(xdgDataHome, "AirportSystem", FileName);
+
+                if (!string.IsNullOrWhiteSpace(home))
+                    return Path.Combine(home, ".local", "share", "AirportSystem", FileName);
+            }
+
+            return Path.Combine(AppContext.BaseDirectory, "AirportSystem", FileName);
         }
 
         private static string GetLoadPath()
