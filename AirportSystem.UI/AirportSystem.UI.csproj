@@ -4,7 +4,20 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ApplicationManifest Condition="$([MSBuild]::IsOSPlatform('Windows'))">app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\app-icon.ico</ApplicationIcon>
+
+    <!-- Cambia esta ruta con -p:LogoSourceDir="..." si tu carpeta de logos es otra. -->
+    <LogoSourceDir Condition="'$(LogoSourceDir)' == '' and '$(OS)' == 'Windows_NT'">$(USERPROFILE)\Downloads\Logo</LogoSourceDir>
+    <LogoSourceDir Condition="'$(LogoSourceDir)' == ''">$(MSBuildThisFileDirectory)Assets\Logo</LogoSourceDir>
+    <LogoPowerShell Condition="'$(OS)' == 'Windows_NT'">powershell</LogoPowerShell>
+    <LogoPowerShell Condition="'$(OS)' != 'Windows_NT'">pwsh</LogoPowerShell>
   </PropertyGroup>
+
+  <!-- Cualquier imagen nueva en LogoSourceDir regenera el PNG y el ICO al compilar. -->
+  <Target Name="RefreshAppLogo" BeforeTargets="PrepareForBuild" Condition="'$(DesignTimeBuild)' != 'true'">
+    <Exec Command="&quot;$(LogoPowerShell)&quot; -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildThisFileDirectory)Scripts\Build-Logo.ps1&quot; -SourceDir &quot;$(LogoSourceDir)&quot; -AssetsDir &quot;$(MSBuildThisFileDirectory)Assets&quot;"
+          ContinueOnError="WarnAndContinue" />
+  </Target>
 
   <ItemGroup>
     <Folder Include="Models\" />

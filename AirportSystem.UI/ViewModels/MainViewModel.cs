@@ -16,6 +16,7 @@ namespace AirportSystem.UI.ViewModels;
 public partial class MainViewModel : ViewModelBase
 {
     private readonly AirportService _service = new();
+    private readonly LocalizationService _loc = LocalizationService.Instance;
     private string? _editingFlightNumber;
     private int? _editingPassengerId;
     private int? _editingBookingId;
@@ -62,11 +63,11 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private bool _isEditingFlight;
     [ObservableProperty] private bool _isEditingPassenger;
     [ObservableProperty] private bool _isEditingBooking;
-    [ObservableProperty] private string _flightFormTitle = "Registrar nuevo vuelo";
-    [ObservableProperty] private string _flightActionText = "Registrar vuelo";
-    [ObservableProperty] private string _passengerFormTitle = "Registrar pasajero";
-    [ObservableProperty] private string _passengerActionText = "Registrar pasajero";
-    [ObservableProperty] private string _bookingActionText = "Reservar";
+    [ObservableProperty] private string _flightFormTitle = string.Empty;
+    [ObservableProperty] private string _flightActionText = string.Empty;
+    [ObservableProperty] private string _passengerFormTitle = string.Empty;
+    [ObservableProperty] private string _passengerActionText = string.Empty;
+    [ObservableProperty] private string _bookingActionText = string.Empty;
     [ObservableProperty] private string _bookingFlightNumber = string.Empty;
     [ObservableProperty] private string _bookingPassengerName = string.Empty;
 
@@ -82,11 +83,14 @@ public partial class MainViewModel : ViewModelBase
 
     public MainViewModel()
     {
+        _loc.LanguageChanged += OnLanguageChanged;
+        RefreshLocalizedTitles();
         LoadInitialData();
     }
 
     private void SetStatus(string message, bool error = false)
     {
+        message = _loc.LocalizeServiceMessage(message);
         StatusMessage = message;
         StatusBrush = new SolidColorBrush(Color.Parse(error ? "#DC2626" : "#16A34A"));
     }
@@ -100,19 +104,19 @@ public partial class MainViewModel : ViewModelBase
             if (flights is not null && passengers is not null && bookings is not null)
             {
                 _service.LoadData(flights, passengers, bookings);
-                SetStatus($"Datos guardados cargados: {flights.Count} vuelos, {passengers.Count} pasajeros, {bookings.Count} reservas.");
+                SetStatus(_loc.Get("LoadedSaved", flights.Count, passengers.Count, bookings.Count));
                 loaded = true;
             }
         }
         catch (Exception ex)
         {
-            SetStatus($"No se pudieron cargar los datos guardados: {ex.Message}", error: true);
+            SetStatus(_loc.Get("LoadError", ex.Message), error: true);
         }
 
         if (!loaded)
         {
             _service.SeedData();
-            SetStatus("Datos de ejemplo cargados. ¡Bienvenido al sistema aeroportuario!");
+            SetStatus(_loc.Get("Seeded"));
         }
 
         RefreshFlights();
@@ -142,11 +146,11 @@ public partial class MainViewModel : ViewModelBase
             RefreshPassengers();
             RefreshBookings();
 
-            SetStatus("Datos actualizados desde la app de consola.");
+            SetStatus(_loc.Get("Synced"));
         }
         catch (Exception ex)
         {
-            SetStatus($"No se pudieron recargar los datos: {ex.Message}", error: true);
+            SetStatus(_loc.Get("ReloadError", ex.Message), error: true);
         }
     }
 
@@ -186,9 +190,9 @@ public partial class MainViewModel : ViewModelBase
             Bookings.Add(new BookingRow(
                 booking.BookingId,
                 booking.FlightNumber,
-                passenger?.FullName ?? $"Pasajero #{booking.PassengerId}",
+                passenger?.FullName ?? _loc.Get("PassengerFallback", booking.PassengerId),
                 booking.SeatNumber,
-                booking.IsCheckedIn ? "Checked-in" : "Pendiente"));
+                booking.IsCheckedIn ? _loc.Get("BookingCheckedIn") : _loc.Get("BookingPending")));
         }
 
         SelectedBooking = Bookings.FirstOrDefault(b => b.BookingId == selectedId)
@@ -226,7 +230,7 @@ public partial class MainViewModel : ViewModelBase
 
     partial void OnIsEditingBookingChanged(bool value)
     {
-        BookingActionText = value ? "Guardar cambios" : "Reservar";
+        BookingActionText = value ? _loc.Get("SaveChanges") : _loc.Get("Book");
         ReloadAvailableSeats();
     }
 
@@ -246,7 +250,7 @@ public partial class MainViewModel : ViewModelBase
 
         SelectedFlight = Flights.FirstOrDefault();
         ReloadAvailableSeats();
-        SetStatus($"{Flights.Count} vuelo(s) encontrado(s).");
+        SetStatus(_loc.Get("FlightsFound", Flights.Count));
     }
 
     [RelayCommand]
@@ -255,7 +259,7 @@ public partial class MainViewModel : ViewModelBase
         SearchOrigin = string.Empty;
         SearchDestination = string.Empty;
         RefreshFlights();
-        SetStatus($"{Flights.Count} vuelo(s) en total.");
+        SetStatus(_loc.Get("FlightsTotal", Flights.Count));
     }
 
     [RelayCommand]
@@ -291,15 +295,15 @@ public partial class MainViewModel : ViewModelBase
 
             var saved = TrySave();
             SetStatus(saved
-                ? $"Vuelo {flight!.FlightNumber} registrado y guardado. Aparece primero en la lista."
-                : $"Vuelo {flight!.FlightNumber} registrado. Aparece primero, pero no se pudo guardar.",
+                ? _loc.Get("FlightRegisteredSaved", flight!.FlightNumber)
+                : _loc.Get("FlightRegisteredNotSaved", flight!.FlightNumber),
                 error: !saved);
 
             ClearFlightForm();
         }
         catch (Exception ex)
         {
-            SetStatus($"No se pudo registrar el vuelo: {ex.Message}", error: true);
+            SetStatus(_loc.Get("RegisterFlightError", ex.Message), error: true);
         }
     }
 
@@ -307,7 +311,7 @@ public partial class MainViewModel : ViewModelBase
     {
         if (_editingFlightNumber is null)
         {
-            SetStatus("No hay ningún vuelo en edición.", error: true);
+            SetStatus(_loc.Get("NoFlightEditing"), error: true);
             CancelFlightEdit();
             return;
         }
@@ -333,15 +337,15 @@ public partial class MainViewModel : ViewModelBase
 
             var saved = TrySave();
             SetStatus(saved
-                ? $"Vuelo {original} actualizado a {updated!.FlightNumber} y guardado."
-                : $"Vuelo {original} actualizado a {updated!.FlightNumber}, pero no se pudo guardar.",
+                ? _loc.Get("FlightUpdatedSaved", original, updated!.FlightNumber)
+                : _loc.Get("FlightUpdatedNotSaved", original, updated!.FlightNumber),
                 error: !saved);
 
             CancelFlightEdit();
         }
         catch (Exception ex)
         {
-            SetStatus($"No se pudo actualizar el vuelo: {ex.Message}", error: true);
+            SetStatus(_loc.Get("UpdateFlightError", ex.Message), error: true);
         }
     }
 
@@ -357,20 +361,20 @@ public partial class MainViewModel : ViewModelBase
             string.IsNullOrWhiteSpace(NewGate) ||
             string.IsNullOrWhiteSpace(NewColumns))
         {
-            error = "Completa todos los campos obligatorios del vuelo.";
+            error = _loc.Get("FillFlightFields");
             return false;
         }
 
         if (!TryParseDateTime(NewDeparture, out var departure) ||
             !TryParseDateTime(NewArrival, out var arrival))
         {
-            error = "Fechas inválidas. Usa el formato yyyy-MM-dd HH:mm.";
+            error = _loc.Get("InvalidDates");
             return false;
         }
 
         if (arrival <= departure)
         {
-            error = "La llegada debe ser posterior a la salida.";
+            error = _loc.Get("ArrivalAfterDeparture");
             return false;
         }
 
@@ -378,7 +382,7 @@ public partial class MainViewModel : ViewModelBase
             !int.TryParse(NewTerminal, out var terminal) ||
             !int.TryParse(NewRows, out var rows) || rows <= 0)
         {
-            error = "Precio, terminal o filas inválidos.";
+            error = _loc.Get("InvalidPriceTerminalRows");
             return false;
         }
 
@@ -387,7 +391,7 @@ public partial class MainViewModel : ViewModelBase
                 string.Equals(f.FlightNumber, flightNumber, StringComparison.OrdinalIgnoreCase) &&
                 string.Equals(f.FlightNumber, _editingFlightNumber, StringComparison.OrdinalIgnoreCase) == false))
         {
-            error = $"Ya existe un vuelo con el número {flightNumber}. Usa otro número.";
+            error = _loc.Get("DuplicateFlight", flightNumber);
             return false;
         }
 
@@ -410,7 +414,7 @@ public partial class MainViewModel : ViewModelBase
                 .FirstOrDefault(f => f.FlightNumber == _editingFlightNumber);
             if (current is null)
             {
-                error = "El vuelo que se está editando ya no existe.";
+                error = _loc.Get("EditingFlightGone");
                 return false;
             }
 
@@ -438,15 +442,15 @@ public partial class MainViewModel : ViewModelBase
 
         if (SelectedFlight is null)
         {
-            SetStatus("Selecciona un vuelo para editar.", error: true);
+            SetStatus(_loc.Get("SelectFlightToEdit"), error: true);
             return;
         }
 
         var flight = SelectedFlight;
         _editingFlightNumber = flight.FlightNumber;
         IsEditingFlight = true;
-        FlightFormTitle = $"Editando vuelo {flight.FlightNumber}";
-        FlightActionText = "Guardar cambios";
+        FlightFormTitle = _loc.Get("EditFlightTitle", flight.FlightNumber);
+        FlightActionText = _loc.Get("SaveChanges");
 
         NewFlightNumber = flight.FlightNumber;
         NewAirline = flight.Airline;
@@ -460,7 +464,7 @@ public partial class MainViewModel : ViewModelBase
         NewRows = "10";
         NewColumns = "ABCDEF";
 
-        SetStatus($"Editando vuelo {flight.FlightNumber}. La distribución de asientos no se puede cambiar si hay reservas.");
+        SetStatus(_loc.Get("EditingFlightStatus", flight.FlightNumber));
     }
 
     [RelayCommand]
@@ -468,10 +472,10 @@ public partial class MainViewModel : ViewModelBase
     {
         _editingFlightNumber = null;
         IsEditingFlight = false;
-        FlightFormTitle = "Registrar nuevo vuelo";
-        FlightActionText = "Registrar vuelo";
+        FlightFormTitle = _loc.Get("RegisterNewFlight");
+        FlightActionText = _loc.Get("RegisterFlight");
         ClearFlightForm();
-        SetStatus("Edición de vuelo cancelada.");
+        SetStatus(_loc.Get("FlightEditCancelled"));
     }
 
     [RelayCommand]
@@ -481,25 +485,25 @@ public partial class MainViewModel : ViewModelBase
 
         if (SelectedFlight is null)
         {
-            SetStatus("Selecciona un vuelo para eliminar.", error: true);
+            SetStatus(_loc.Get("SelectFlightToDelete"), error: true);
             return;
         }
 
         var number = SelectedFlight.FlightNumber;
         var bookings = _service.GetAllBookings().Count(b => b.FlightNumber == number);
         var detail = bookings == 0
-            ? $"¿Eliminar el vuelo {number}?"
-            : $"¿Eliminar el vuelo {number}? También se cancelarán {bookings} reserva(s).";
+            ? _loc.Get("ConfirmDeleteFlight", number)
+            : _loc.Get("ConfirmDeleteFlightBookings", number, bookings);
 
         if (Confirm is not null && !await Confirm(detail))
         {
-            SetStatus("Eliminación cancelada.");
+            SetStatus(_loc.Get("DeleteCancelled"));
             return;
         }
 
         if (!_service.DeleteFlight(number, out var removed))
         {
-            SetStatus($"No se encontró el vuelo {number}.", error: true);
+            SetStatus(_loc.Get("FlightNotFound", number), error: true);
             return;
         }
 
@@ -507,8 +511,8 @@ public partial class MainViewModel : ViewModelBase
         {
             _editingFlightNumber = null;
             IsEditingFlight = false;
-            FlightFormTitle = "Registrar nuevo vuelo";
-            FlightActionText = "Registrar vuelo";
+            FlightFormTitle = _loc.Get("RegisterNewFlight");
+            FlightActionText = _loc.Get("RegisterFlight");
             ClearFlightForm();
         }
 
@@ -517,8 +521,8 @@ public partial class MainViewModel : ViewModelBase
 
         var saved = TrySave();
         SetStatus(saved
-            ? $"Vuelo {number} eliminado. Se cancelaron {removed} reserva(s) y se guardó."
-            : $"Vuelo {number} eliminado, pero no se pudo guardar.",
+            ? _loc.Get("FlightDeletedSaved", number, removed)
+            : _loc.Get("FlightDeletedNotSaved", number),
             error: !saved);
     }
 
@@ -530,7 +534,7 @@ public partial class MainViewModel : ViewModelBase
         if (string.IsNullOrWhiteSpace(PassengerFirstName) ||
             string.IsNullOrWhiteSpace(PassengerLastName))
         {
-            SetStatus("El nombre y el apellido son obligatorios.", error: true);
+            SetStatus(_loc.Get("NameLastNameRequired"), error: true);
             return;
         }
 
@@ -554,15 +558,15 @@ public partial class MainViewModel : ViewModelBase
 
                 var savedEdit = TrySave();
                 SetStatus(savedEdit
-                    ? $"Pasajero \"{updated.FullName}\" actualizado y guardado."
-                    : $"Pasajero \"{updated.FullName}\" actualizado, pero no se pudo guardar.",
+                    ? _loc.Get("PassengerUpdatedSaved", updated.FullName)
+                    : _loc.Get("PassengerUpdatedNotSaved", updated.FullName),
                     error: !savedEdit);
 
                 CancelPassengerEdit();
             }
             catch (Exception ex)
             {
-                SetStatus($"No se pudo actualizar el pasajero: {ex.Message}", error: true);
+                SetStatus(_loc.Get("UpdatePassengerError", ex.Message), error: true);
             }
 
             return;
@@ -580,8 +584,8 @@ public partial class MainViewModel : ViewModelBase
 
         var saved = TrySave();
         SetStatus(saved
-            ? $"Pasajero \"{passenger.FullName}\" registrado con ID {passenger.Id}. Aparece primero y se guardó."
-            : $"Pasajero \"{passenger.FullName}\" registrado con ID {passenger.Id}. Aparece primero, pero no se pudo guardar.",
+            ? _loc.Get("PassengerRegisteredSaved", passenger.FullName, passenger.Id)
+            : _loc.Get("PassengerRegisteredNotSaved", passenger.FullName, passenger.Id),
             error: !saved);
 
         ClearPassengerForm();
@@ -594,22 +598,22 @@ public partial class MainViewModel : ViewModelBase
 
         if (SelectedPassenger is null)
         {
-            SetStatus("Selecciona un pasajero para editar.", error: true);
+            SetStatus(_loc.Get("SelectPassengerToEdit"), error: true);
             return;
         }
 
         var passenger = SelectedPassenger;
         _editingPassengerId = passenger.Id;
         IsEditingPassenger = true;
-        PassengerFormTitle = $"Editando pasajero #{passenger.Id}";
-        PassengerActionText = "Guardar cambios";
+        PassengerFormTitle = _loc.Get("EditPassengerTitle", passenger.Id);
+        PassengerActionText = _loc.Get("SaveChanges");
 
         PassengerFirstName = passenger.FirstName;
         PassengerLastName = passenger.LastName;
         PassengerEmail = passenger.Email;
         PassengerPhone = passenger.Phone;
 
-        SetStatus($"Editando a {passenger.FullName}.");
+        SetStatus(_loc.Get("EditingPassenger", passenger.FullName));
     }
 
     [RelayCommand]
@@ -617,10 +621,10 @@ public partial class MainViewModel : ViewModelBase
     {
         _editingPassengerId = null;
         IsEditingPassenger = false;
-        PassengerFormTitle = "Registrar pasajero";
-        PassengerActionText = "Registrar pasajero";
+        PassengerFormTitle = _loc.Get("RegisterPassenger");
+        PassengerActionText = _loc.Get("RegisterPassenger");
         ClearPassengerForm();
-        SetStatus("Edición de pasajero cancelada.");
+        SetStatus(_loc.Get("PassengerEditCancelled"));
     }
 
     [RelayCommand]
@@ -630,7 +634,7 @@ public partial class MainViewModel : ViewModelBase
 
         if (SelectedPassenger is null)
         {
-            SetStatus("Selecciona un pasajero para eliminar.", error: true);
+            SetStatus(_loc.Get("SelectPassengerToDelete"), error: true);
             return;
         }
 
@@ -638,18 +642,18 @@ public partial class MainViewModel : ViewModelBase
         var name = SelectedPassenger.FullName;
         var bookings = _service.GetBookingsForPassenger(id).Count;
         var detail = bookings == 0
-            ? $"¿Eliminar al pasajero {name} (ID {id})?"
-            : $"¿Eliminar al pasajero {name} (ID {id})? También se cancelarán {bookings} reserva(s) y se liberarán sus asientos.";
+            ? _loc.Get("ConfirmDeletePassenger", name, id)
+            : _loc.Get("ConfirmDeletePassengerBookings", name, id, bookings);
 
         if (Confirm is not null && !await Confirm(detail))
         {
-            SetStatus("Eliminación cancelada.");
+            SetStatus(_loc.Get("DeleteCancelled"));
             return;
         }
 
         if (!_service.DeletePassenger(id, out var removed))
         {
-            SetStatus($"No se encontró el pasajero #{id}.", error: true);
+            SetStatus(_loc.Get("PassengerNotFound", id), error: true);
             return;
         }
 
@@ -657,8 +661,8 @@ public partial class MainViewModel : ViewModelBase
         {
             _editingPassengerId = null;
             IsEditingPassenger = false;
-            PassengerFormTitle = "Registrar pasajero";
-            PassengerActionText = "Registrar pasajero";
+            PassengerFormTitle = _loc.Get("RegisterPassenger");
+            PassengerActionText = _loc.Get("RegisterPassenger");
             ClearPassengerForm();
         }
 
@@ -668,8 +672,8 @@ public partial class MainViewModel : ViewModelBase
 
         var saved = TrySave();
         SetStatus(saved
-            ? $"Pasajero {name} eliminado. Se cancelaron {removed} reserva(s) y se guardó."
-            : $"Pasajero {name} eliminado, pero no se pudo guardar.",
+            ? _loc.Get("PassengerDeletedSaved", name, removed)
+            : _loc.Get("PassengerDeletedNotSaved", name),
             error: !saved);
     }
 
@@ -686,19 +690,19 @@ public partial class MainViewModel : ViewModelBase
 
         if (SelectedFlight is null)
         {
-            SetStatus("Selecciona un vuelo.", error: true);
+            SetStatus(_loc.Get("SelectFlight"), error: true);
             return;
         }
 
         if (SelectedPassenger is null)
         {
-            SetStatus("Selecciona un pasajero (o regístralo primero).", error: true);
+            SetStatus(_loc.Get("SelectPassenger"), error: true);
             return;
         }
 
         if (string.IsNullOrWhiteSpace(SelectedSeat))
         {
-            SetStatus("Selecciona un asiento disponible.", error: true);
+            SetStatus(_loc.Get("SelectSeat"), error: true);
             return;
         }
 
@@ -721,8 +725,8 @@ public partial class MainViewModel : ViewModelBase
 
         var saved = TrySave();
         SetStatus(saved
-            ? $"Reserva confirmada y guardada. ID: {bookingId}, vuelo {flightNumber}, asiento {seat}."
-            : $"Reserva confirmada. ID: {bookingId}, vuelo {flightNumber}, asiento {seat}, pero no se pudo guardar.",
+            ? _loc.Get("BookingConfirmedSaved", bookingId, flightNumber, seat)
+            : _loc.Get("BookingConfirmedNotSaved", bookingId, flightNumber, seat),
             error: !saved);
     }
 
@@ -733,7 +737,7 @@ public partial class MainViewModel : ViewModelBase
 
         if (SelectedBooking is null)
         {
-            SetStatus("Selecciona una reserva para hacer check-in.", error: true);
+            SetStatus(_loc.Get("SelectBookingToCheckIn"), error: true);
             return;
         }
 
@@ -745,14 +749,14 @@ public partial class MainViewModel : ViewModelBase
 
         if (!ok)
         {
-            SetStatus("No se pudo hacer check-in (reserva inexistente, ya registrada o vuelo cancelado).", error: true);
+            SetStatus(_loc.Get("CheckInFailed"), error: true);
             return;
         }
 
         var saved = TrySave();
         SetStatus(saved
-            ? $"Check-in realizado y guardado para la reserva {bookingId}."
-            : $"Check-in realizado para la reserva {bookingId}, pero no se pudo guardar.",
+            ? _loc.Get("CheckInSaved", bookingId)
+            : _loc.Get("CheckInNotSaved", bookingId),
             error: !saved);
     }
 
@@ -763,7 +767,7 @@ public partial class MainViewModel : ViewModelBase
 
         if (SelectedBooking is null)
         {
-            SetStatus("Selecciona una reserva para cancelar.", error: true);
+            SetStatus(_loc.Get("SelectBookingToCancel"), error: true);
             return;
         }
 
@@ -775,14 +779,14 @@ public partial class MainViewModel : ViewModelBase
 
         if (!ok)
         {
-            SetStatus("No se encontró la reserva.", error: true);
+            SetStatus(_loc.Get("BookingNotFound"), error: true);
             return;
         }
 
         var saved = TrySave();
         SetStatus(saved
-            ? $"Reserva {bookingId} cancelada, asiento liberado y cambios guardados."
-            : $"Reserva {bookingId} cancelada, pero no se pudo guardar.",
+            ? _loc.Get("BookingCancelledSaved", bookingId)
+            : _loc.Get("BookingCancelledNotSaved", bookingId),
             error: !saved);
     }
 
@@ -790,7 +794,7 @@ public partial class MainViewModel : ViewModelBase
     {
         if (_editingBookingId is null)
         {
-            SetStatus("No hay ninguna reserva en edición.", error: true);
+            SetStatus(_loc.Get("NoBookingEditing"), error: true);
             CancelBookingEdit();
             return;
         }
@@ -798,7 +802,7 @@ public partial class MainViewModel : ViewModelBase
         if (SelectedFlight is null || SelectedPassenger is null ||
             string.IsNullOrWhiteSpace(SelectedSeat))
         {
-            SetStatus("Selecciona vuelo, pasajero y asiento para guardar la reserva.", error: true);
+            SetStatus(_loc.Get("SelectFlightPassengerSeat"), error: true);
             return;
         }
 
@@ -821,8 +825,8 @@ public partial class MainViewModel : ViewModelBase
 
         var saved = TrySave();
         SetStatus(saved
-            ? $"Reserva {bookingId} actualizada y guardada."
-            : $"Reserva {bookingId} actualizada, pero no se pudo guardar.",
+            ? _loc.Get("BookingUpdatedSaved", bookingId)
+            : _loc.Get("BookingUpdatedNotSaved", bookingId),
             error: !saved);
 
         CancelBookingEdit();
@@ -835,7 +839,7 @@ public partial class MainViewModel : ViewModelBase
 
         if (SelectedBooking is null)
         {
-            SetStatus("Selecciona una reserva para editar.", error: true);
+            SetStatus(_loc.Get("SelectBookingToEdit"), error: true);
             return;
         }
 
@@ -847,7 +851,7 @@ public partial class MainViewModel : ViewModelBase
 
         if (flight is null || passenger is null)
         {
-            SetStatus("No se puede editar la reserva: su vuelo o pasajero ya no existe.", error: true);
+            SetStatus(_loc.Get("BookingEditUnavailable"), error: true);
             return;
         }
 
@@ -860,7 +864,7 @@ public partial class MainViewModel : ViewModelBase
         SelectedPassenger = passenger;
         SelectedSeat = row.Seat;
 
-        SetStatus($"Editando reserva #{row.BookingId}. Puedes cambiar vuelo, pasajero y asiento.");
+        SetStatus(_loc.Get("EditingBooking", row.BookingId));
     }
 
     [RelayCommand]
@@ -871,7 +875,7 @@ public partial class MainViewModel : ViewModelBase
         BookingFlightNumber = string.Empty;
         BookingPassengerName = string.Empty;
         ReloadAvailableSeats();
-        SetStatus("Edición de reserva cancelada.");
+        SetStatus(_loc.Get("BookingEditCancelled"));
     }
 
     [RelayCommand]
@@ -881,16 +885,16 @@ public partial class MainViewModel : ViewModelBase
 
         if (SelectedBooking is null)
         {
-            SetStatus("Selecciona una reserva para eliminar.", error: true);
+            SetStatus(_loc.Get("SelectBookingToDelete"), error: true);
             return;
         }
 
         var row = SelectedBooking;
-        var detail = $"¿Eliminar la reserva #{row.BookingId} de {row.Passenger} en el vuelo {row.FlightNumber}? Se liberará el asiento {row.Seat}.";
+        var detail = _loc.Get("ConfirmDeleteBooking", row.BookingId, row.Passenger, row.FlightNumber, row.Seat);
 
         if (Confirm is not null && !await Confirm(detail))
         {
-            SetStatus("Eliminación cancelada.");
+            SetStatus(_loc.Get("DeleteCancelled"));
             return;
         }
 
@@ -899,7 +903,7 @@ public partial class MainViewModel : ViewModelBase
 
         if (!_service.DeleteBooking(row.BookingId))
         {
-            SetStatus($"No se encontró la reserva #{row.BookingId}.", error: true);
+            SetStatus(_loc.Get("BookingNotFoundId", row.BookingId), error: true);
             return;
         }
 
@@ -908,8 +912,8 @@ public partial class MainViewModel : ViewModelBase
 
         var saved = TrySave();
         SetStatus(saved
-            ? $"Reserva {row.BookingId} eliminada, asiento liberado y cambios guardados."
-            : $"Reserva {row.BookingId} eliminada, pero no se pudo guardar.",
+            ? _loc.Get("BookingDeletedSaved", row.BookingId)
+            : _loc.Get("BookingDeletedNotSaved", row.BookingId),
             error: !saved);
     }
 
@@ -921,7 +925,7 @@ public partial class MainViewModel : ViewModelBase
         if (!double.TryParse(AdvanceHours, NumberStyles.Float, CultureInfo.CurrentCulture, out var hours) &&
             !double.TryParse(AdvanceHours, NumberStyles.Float, CultureInfo.InvariantCulture, out hours))
         {
-            SetStatus("Introduce un número de horas válido.", error: true);
+            SetStatus(_loc.Get("InvalidHours"), error: true);
             return;
         }
 
@@ -931,8 +935,8 @@ public partial class MainViewModel : ViewModelBase
 
         var saved = TrySave();
         SetStatus(saved
-            ? $"Tiempo avanzado {hours} hora(s). Estados de vuelo actualizados y guardados."
-            : $"Tiempo avanzado {hours} hora(s), pero no se pudieron guardar los cambios.",
+            ? _loc.Get("TimeAdvancedSaved", hours)
+            : _loc.Get("TimeAdvancedNotSaved", hours),
             error: !saved);
     }
 
@@ -940,7 +944,7 @@ public partial class MainViewModel : ViewModelBase
     private void Save()
     {
         if (TrySave())
-            SetStatus($"Datos guardados en {DataStorage.FilePath}.");
+            SetStatus(_loc.Get("DataSavedAt", DataStorage.FilePath));
     }
 
     private bool TrySave()
@@ -952,11 +956,33 @@ public partial class MainViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            SetStatus($"No se pudieron guardar los datos: {ex.Message}", error: true);
+            SetStatus(_loc.Get("SaveError", ex.Message), error: true);
             return false;
         }
     }
 
+    private void OnLanguageChanged()
+    {
+        RefreshBookings();
+        RefreshLocalizedTitles();
+        OnPropertyChanged(nameof(SeatMapDisplay));
+        SetStatus(_loc.Get("LanguageChanged", _loc.SelectedLanguage));
+    }
+
+    private void RefreshLocalizedTitles()
+    {
+        FlightFormTitle = IsEditingFlight && _editingFlightNumber is not null
+            ? _loc.Get("EditFlightTitle", _editingFlightNumber)
+            : _loc.Get("RegisterNewFlight");
+        FlightActionText = IsEditingFlight ? _loc.Get("SaveChanges") : _loc.Get("RegisterFlight");
+
+        PassengerFormTitle = IsEditingPassenger && _editingPassengerId is not null
+            ? _loc.Get("EditPassengerTitle", _editingPassengerId.Value)
+            : _loc.Get("RegisterPassenger");
+        PassengerActionText = IsEditingPassenger ? _loc.Get("SaveChanges") : _loc.Get("RegisterPassenger");
+
+        BookingActionText = IsEditingBooking ? _loc.Get("SaveChanges") : _loc.Get("Book");
+    }
     private void MoveFlightToTop(Flight flight)
     {
         var index = Flights.IndexOf(flight);
@@ -1003,11 +1029,11 @@ public partial class MainViewModel : ViewModelBase
     private string BuildSeatMap()
     {
         if (SelectedFlight is null)
-            return "Selecciona un vuelo para ver el mapa de asientos.";
+            return _loc.Get("SeatMapSelectFlight");
 
         var keys = SelectedFlight.SeatMap.Keys.ToList();
         if (keys.Count == 0)
-            return "Este vuelo no tiene asientos configurados.";
+            return _loc.Get("SeatMapNoSeats");
 
         var seats = keys
             .Select(key => new SeatPosition(key, RowOf(key), key[^1]))

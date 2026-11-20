@@ -28,6 +28,32 @@ namespace AirportSystem.Services
             _bookings = bookings.ToList();
             _nextPassengerId = _passengers.Count == 0 ? 1 : _passengers.Max(p => p.Id) + 1;
             _nextBookingId = _bookings.Count == 0 ? 1 : _bookings.Max(b => b.BookingId) + 1;
+
+            // Las reservas son la fuente de verdad: si un SeatMap guardado quedo
+            // desincronizado, se corrige aqui para no vender dos veces el mismo asiento.
+            foreach (var booking in _bookings)
+            {
+                if (string.IsNullOrWhiteSpace(booking.SeatNumber))
+                    continue;
+
+                var flight = _flights.FirstOrDefault(f => f.FlightNumber == booking.FlightNumber);
+                var seat = NormalizeSeat(booking.SeatNumber);
+                if (flight is not null && flight.SeatMap.ContainsKey(seat))
+                    flight.SeatMap[seat] = true;
+            }
+        }
+
+        private static string NormalizeSeat(string? seat) => seat?.Trim().ToUpperInvariant() ?? string.Empty;
+
+        /// <summary>
+        /// Un asiento ocupado aunque el SeatMap diga lo contrario, porque las
+        /// reservas son las que mandan.
+        /// </summary>
+        private bool IsSeatTaken(string flightNumber, string seat, int? exceptBookingId = null)
+        {
+            return _bookings.Any(b => b.BookingId != exceptBookingId
+                                      && b.FlightNumber == flightNumber
+                                      && NormalizeSeat(b.SeatNumber) == seat);
         }
 
         public void AddFlight(Flight flight)
@@ -75,24 +101,25 @@ namespace AirportSystem.Services
             if (flight.Status == FlightStatus.Cancelled || flight.Status == FlightStatus.Arrived)
                 return (false, "Flight is not available for booking.", -1);
 
-            if (!flight.SeatMap.ContainsKey(seatNumber))
+            var seat = NormalizeSeat(seatNumber);
+            if (!flight.SeatMap.ContainsKey(seat))
                 return (false, "Invalid seat number.", -1);
 
-            if (flight.SeatMap[seatNumber])
+            if (flight.SeatMap[seat] || IsSeatTaken(flightNumber, seat))
                 return (false, "Seat already booked.", -1);
 
             var passenger = _passengers.FirstOrDefault(p => p.Id == passengerId);
             if (passenger == null)
                 return (false, "Passenger not found. Please register first.", -1);
 
-            flight.BookSeat(seatNumber);
+            flight.BookSeat(seat);
 
             var booking = new Booking
             {
                 BookingId = _nextBookingId++,
                 FlightNumber = flightNumber,
                 PassengerId = passengerId,
-                SeatNumber = seatNumber,
+                SeatNumber = seat,
                 BookingDate = DateTime.Now,
                 IsCheckedIn = false
             };
@@ -108,7 +135,7 @@ namespace AirportSystem.Services
 
             var flight = _flights.FirstOrDefault(f => f.FlightNumber == booking.FlightNumber);
             if (flight != null)
-                flight.FreeSeat(booking.SeatNumber);
+                flight.FreeSeat(NormalizeSeat(booking.SeatNumber));
 
             _bookings.Remove(booking);
             return true;
@@ -126,6 +153,12 @@ namespace AirportSystem.Services
 
             var flight = _flights.FirstOrDefault(f => f.FlightNumber == booking.FlightNumber);
             if (flight == null || flight.Status == FlightStatus.Cancelled)
+                return false;
+
+            // Nunca dos reservas del mismo vuelo pueden usar el mismo asiento,
+            // aunque el SeatMap guardado estuviera desincronizado.
+            if (!string.IsNullOrWhiteSpace(booking.SeatNumber) &&
+                IsSeatTaken(booking.FlightNumber, NormalizeSeat(booking.SeatNumber), booking.BookingId))
                 return false;
 
             booking.IsCheckedIn = true;
@@ -221,7 +254,7 @@ namespace AirportSystem.Services
             foreach (var booking in bookings)
             {
                 var flight = _flights.FirstOrDefault(f => f.FlightNumber == booking.FlightNumber);
-                flight?.FreeSeat(booking.SeatNumber);
+                flight?.FreeSeat(NormalizeSeat(booking.SeatNumber));
                 _bookings.Remove(booking);
             }
 
@@ -247,32 +280,31 @@ namespace AirportSystem.Services
             if (FindPassenger(passengerId) is null)
                 return (false, "El pasajero no existe.");
 
-            if (!flight.SeatMap.ContainsKey(seatNumber))
+            var seat = NormalizeSeat(seatNumber);
+            if (!flight.SeatMap.ContainsKey(seat))
                 return (false, "Ese asiento no existe en el vuelo.");
 
-            if (_bookings.Any(b => b.BookingId != bookingId
-                                   && b.FlightNumber == flightNumber
-                                   && b.SeatNumber == seatNumber))
+            if (IsSeatTaken(flightNumber, seat, bookingId))
                 return (false, "Ese asiento ya está ocupado por otra reserva.");
 
             // El único caso en el que el asiento puede estar marcado como ocupado
             // es cuando esta misma reserva se mantiene en vuelo y asiento.
             var keepsSameSeat = booking.FlightNumber == flightNumber
-                                && booking.SeatNumber == seatNumber;
-            if (flight.SeatMap[seatNumber] && !keepsSameSeat)
+                                && NormalizeSeat(booking.SeatNumber) == seat;
+            if (flight.SeatMap[seat] && !keepsSameSeat)
                 return (false, "Ese asiento ya está ocupado.");
 
             var previousFlight = _flights.FirstOrDefault(f => f.FlightNumber == booking.FlightNumber);
             var changed = booking.FlightNumber != flightNumber
                           || booking.PassengerId != passengerId
-                          || booking.SeatNumber != seatNumber;
+                          || NormalizeSeat(booking.SeatNumber) != seat;
 
-            previousFlight?.FreeSeat(booking.SeatNumber);
-            flight.BookSeat(seatNumber);
+            previousFlight?.FreeSeat(NormalizeSeat(booking.SeatNumber));
+            flight.BookSeat(seat);
 
             booking.FlightNumber = flightNumber;
             booking.PassengerId = passengerId;
-            booking.SeatNumber = seatNumber;
+            booking.SeatNumber = seat;
             if (changed)
                 booking.IsCheckedIn = false;
 

@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:AirportSystem.UI.ViewModels"
+        xmlns:local="using:AirportSystem.UI"
         xmlns:models="using:AirportSystem.Models"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,8 +9,8 @@
         d:DesignWidth="1180" d:DesignHeight="780"
         x:Class="AirportSystem.UI.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.png"
-        Title="Sistema de Gestión Aeroportuaria"
+        Icon="/Assets/app-logo.png"
+        Title="{DynamicResource AppTitle}"
         Width="1180" Height="780"
         MinWidth="900" MinHeight="600"
         WindowStartupLocation="CenterScreen">
@@ -34,6 +35,18 @@
   </Window.Styles>
 
   <DockPanel>
+    <Border DockPanel.Dock="Top" Background="#FFFFFF"
+            BorderBrush="#E5E7EB" BorderThickness="0,0,0,1" Padding="14,8">
+      <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+        <Image Source="/Assets/app-logo.png" Width="40" Height="40" Stretch="Uniform"/>
+        <TextBlock Text="{DynamicResource AppTitle}"
+                   Classes="title" Foreground="#111827" VerticalAlignment="Center"/>
+        <ComboBox Width="120" Margin="16,0,0,0"
+                  ItemsSource="{Binding Languages, Source={x:Static local:LocalizationService.Instance}}"
+                  SelectedItem="{Binding SelectedLanguage, Source={x:Static local:LocalizationService.Instance}}"/>
+      </StackPanel>
+    </Border>
+
     <Border DockPanel.Dock="Bottom" Background="#111827" Padding="14,10">
       <Grid ColumnDefinitions="*,Auto">
         <TextBlock Text="{Binding StatusMessage}"
@@ -41,7 +54,7 @@
                    VerticalAlignment="Center"
                    TextWrapping="Wrap"/>
         <Button Grid.Column="1"
-                Content="Guardar datos"
+                Content="{DynamicResource SaveData}"
                 Command="{Binding SaveCommand}"
                 Margin="12,0,0,0"/>
       </Grid>
@@ -49,30 +62,30 @@
 
     <TabControl Margin="10">
       <!-- ==================== VUELOS ==================== -->
-      <TabItem Header="Vuelos">
+      <TabItem Header="{DynamicResource FlightsTab}">
         <Grid ColumnDefinitions="3*,2*" Margin="6">
           <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" Margin="0,0,12,0">
             <Border Grid.Row="0" Classes="card">
               <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,Auto" ColumnSpacing="6">
-                <TextBlock Text="Origen" Classes="label"/>
+                <TextBlock Text="{DynamicResource Origin}" Classes="label"/>
                 <TextBox Grid.Column="1" Text="{Binding SearchOrigin}" PlaceholderText="IST"/>
-                <TextBlock Grid.Column="2" Text="Destino" Classes="label" Margin="8,0,0,0"/>
+                <TextBlock Grid.Column="2" Text="{DynamicResource Destination}" Classes="label" Margin="8,0,0,0"/>
                 <TextBox Grid.Column="3" Text="{Binding SearchDestination}" PlaceholderText="JFK"/>
-                <Button Grid.Column="4" Content="Buscar"
+                <Button Grid.Column="4" Content="{DynamicResource Search}"
                         Command="{Binding SearchFlightsCommand}" Margin="8,0,0,0"/>
-                <Button Grid.Column="5" Content="Ver todos"
+                <Button Grid.Column="5" Content="{DynamicResource ViewAll}"
                         Command="{Binding ShowAllFlightsCommand}" Margin="6,0,0,0"/>
               </Grid>
             </Border>
 
             <Grid Grid.Row="1" RowDefinitions="Auto,*" Margin="0,10,0,0">
               <Grid ColumnDefinitions="80,130,130,90,80,110" Margin="12,4">
-                <TextBlock Text="Vuelo" Classes="label"/>
-                <TextBlock Grid.Column="1" Text="Ruta" Classes="label"/>
-                <TextBlock Grid.Column="2" Text="Salida" Classes="label"/>
-                <TextBlock Grid.Column="3" Text="Estado" Classes="label"/>
-                <TextBlock Grid.Column="4" Text="Asientos" Classes="label"/>
-                <TextBlock Grid.Column="5" Text="Puerta / Term." Classes="label"/>
+                <TextBlock Text="{DynamicResource Flight}" Classes="label"/>
+                <TextBlock Grid.Column="1" Text="{DynamicResource Route}" Classes="label"/>
+                <TextBlock Grid.Column="2" Text="{DynamicResource Departure}" Classes="label"/>
+                <TextBlock Grid.Column="3" Text="{DynamicResource Status}" Classes="label"/>
+                <TextBlock Grid.Column="4" Text="{DynamicResource Seats}" Classes="label"/>
+                <TextBlock Grid.Column="5" Text="{DynamicResource GateTerminal}" Classes="label"/>
               </Grid>
               <ListBox Grid.Row="1"
                        x:Name="FlightsList"
@@ -111,8 +124,8 @@
             <Border Grid.Row="2" Classes="card" Margin="0,10,0,0">
               <Grid RowDefinitions="Auto,Auto">
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                  <TextBlock Text="Mapa de asientos" Classes="title"/>
-                  <TextBlock Text="(X = ocupado, . = libre)"
+                  <TextBlock Text="{DynamicResource SeatMap}" Classes="title"/>
+                  <TextBlock Text="{DynamicResource SeatMapLegend}"
                              Foreground="#6B7280" VerticalAlignment="Center"/>
                 </StackPanel>
                 <ScrollViewer Grid.Row="1" Height="190"
@@ -135,38 +148,38 @@
                   <Grid ColumnDefinitions="115,*"
                         RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
                         RowSpacing="4" ColumnSpacing="8">
-                    <TextBlock Grid.Row="0" Text="N° de vuelo" Classes="label"/>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource FlightNumber}" Classes="label"/>
                     <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NewFlightNumber}" PlaceholderText="TK001"/>
 
-                    <TextBlock Grid.Row="1" Text="Aerolínea" Classes="label"/>
+                    <TextBlock Grid.Row="1" Text="{DynamicResource Airline}" Classes="label"/>
                     <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NewAirline}" PlaceholderText="Turkish Airlines"/>
 
-                    <TextBlock Grid.Row="2" Text="Origen" Classes="label"/>
+                    <TextBlock Grid.Row="2" Text="{DynamicResource Origin}" Classes="label"/>
                     <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding NewOrigin}" PlaceholderText="IST"/>
 
-                    <TextBlock Grid.Row="3" Text="Destino" Classes="label"/>
+                    <TextBlock Grid.Row="3" Text="{DynamicResource Destination}" Classes="label"/>
                     <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding NewDestination}" PlaceholderText="JFK"/>
 
-                    <TextBlock Grid.Row="4" Text="Salida" Classes="label"/>
+                    <TextBlock Grid.Row="4" Text="{DynamicResource Departure}" Classes="label"/>
                     <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding NewDeparture}" PlaceholderText="yyyy-MM-dd HH:mm"/>
 
-                    <TextBlock Grid.Row="5" Text="Llegada" Classes="label"/>
+                    <TextBlock Grid.Row="5" Text="{DynamicResource Arrival}" Classes="label"/>
                     <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding NewArrival}" PlaceholderText="yyyy-MM-dd HH:mm"/>
 
-                    <TextBlock Grid.Row="6" Text="Precio base" Classes="label"/>
+                    <TextBlock Grid.Row="6" Text="{DynamicResource BasePrice}" Classes="label"/>
                     <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding NewBasePrice}" PlaceholderText="450.00"/>
 
-                    <TextBlock Grid.Row="7" Text="Puerta" Classes="label"/>
+                    <TextBlock Grid.Row="7" Text="{DynamicResource Gate}" Classes="label"/>
                     <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding NewGate}" PlaceholderText="A12"/>
 
-                    <TextBlock Grid.Row="8" Text="Terminal" Classes="label"/>
+                    <TextBlock Grid.Row="8" Text="{DynamicResource Terminal}" Classes="label"/>
                     <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding NewTerminal}" PlaceholderText="1"/>
 
-                    <TextBlock Grid.Row="9" Text="Filas de asientos" Classes="label"/>
+                    <TextBlock Grid.Row="9" Text="{DynamicResource SeatRows}" Classes="label"/>
                     <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding NewRows}"
                              PlaceholderText="10" IsEnabled="{Binding CanChangeSeatLayout}"/>
 
-                    <TextBlock Grid.Row="10" Text="Columnas" Classes="label"/>
+                    <TextBlock Grid.Row="10" Text="{DynamicResource Columns}" Classes="label"/>
                     <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding NewColumns}"
                              PlaceholderText="ABCDEF" IsEnabled="{Binding CanChangeSeatLayout}"/>
                   </Grid>
@@ -178,12 +191,12 @@
                     <Button Content="{Binding FlightActionText}"
                             Command="{Binding RegisterFlightCommand}"
                             Classes="accent"/>
-                    <Button Content="Editar seleccionado"
+                    <Button Content="{DynamicResource EditSelected}"
                             Command="{Binding EditFlightCommand}"/>
-                    <Button Content="Cancelar edición"
+                    <Button Content="{DynamicResource CancelEdit}"
                             Command="{Binding CancelFlightEditCommand}"
                             IsVisible="{Binding IsEditingFlight}"/>
-                    <Button Content="Eliminar seleccionado"
+                    <Button Content="{DynamicResource DeleteSelected}"
                             Command="{Binding DeleteFlightCommand}"
                             Background="#DC2626" Foreground="White"/>
                   </StackPanel>
@@ -192,13 +205,13 @@
 
               <Border Classes="card">
                 <StackPanel Spacing="8">
-                  <TextBlock Text="Simulación de tiempo" Classes="title"/>
+                  <TextBlock Text="{DynamicResource TimeSimulation}" Classes="title"/>
                   <StackPanel Orientation="Horizontal" Spacing="8">
-                    <TextBlock Text="Avanzar (horas)" Classes="label"/>
+                    <TextBlock Text="{DynamicResource AdvanceHours}" Classes="label"/>
                     <TextBox Text="{Binding AdvanceHours}" Width="90"/>
-                    <Button Content="Avanzar" Command="{Binding AdvanceTimeCommand}"/>
+                    <Button Content="{DynamicResource Advance}" Command="{Binding AdvanceTimeCommand}"/>
                   </StackPanel>
-                  <TextBlock Text="Actualiza automáticamente el estado de los vuelos."
+                  <TextBlock Text="{DynamicResource TimeSimulationHint}"
                              Foreground="#6B7280" FontSize="12"/>
                 </StackPanel>
               </Border>
@@ -208,16 +221,16 @@
       </TabItem>
 
       <!-- ==================== PASAJEROS ==================== -->
-      <TabItem Header="Pasajeros">
+      <TabItem Header="{DynamicResource PassengersTab}">
         <Grid ColumnDefinitions="3*,2*" Margin="6">
           <Grid Grid.Column="0" RowDefinitions="Auto,*" Margin="0,0,12,0">
-            <TextBlock Text="Pasajeros registrados" Classes="title" Margin="4"/>
+            <TextBlock Text="{DynamicResource RegisteredPassengers}" Classes="title" Margin="4"/>
             <Grid Grid.Row="1" RowDefinitions="Auto,*">
               <Grid ColumnDefinitions="50,180,230,140" Margin="12,4">
-                <TextBlock Text="ID" Classes="label"/>
-                <TextBlock Grid.Column="1" Text="Nombre" Classes="label"/>
-                <TextBlock Grid.Column="2" Text="Email" Classes="label"/>
-                <TextBlock Grid.Column="3" Text="Teléfono" Classes="label"/>
+                <TextBlock Text="{DynamicResource Id}" Classes="label"/>
+                <TextBlock Grid.Column="1" Text="{DynamicResource Name}" Classes="label"/>
+                <TextBlock Grid.Column="2" Text="{DynamicResource Email}" Classes="label"/>
+                <TextBlock Grid.Column="3" Text="{DynamicResource Phone}" Classes="label"/>
               </Grid>
               <ListBox Grid.Row="1"
                        x:Name="PassengersList"
@@ -243,13 +256,13 @@
             <Border Classes="card">
               <StackPanel Spacing="8">
                 <TextBlock Text="{Binding PassengerFormTitle}" Classes="title"/>
-                <TextBlock Text="Nombre" Classes="label"/>
+                <TextBlock Text="{DynamicResource Name}" Classes="label"/>
                 <TextBox Text="{Binding PassengerFirstName}" PlaceholderText="John"/>
-                <TextBlock Text="Apellido" Classes="label"/>
+                <TextBlock Text="{DynamicResource LastName}" Classes="label"/>
                 <TextBox Text="{Binding PassengerLastName}" PlaceholderText="Doe"/>
-                <TextBlock Text="Email" Classes="label"/>
+                <TextBlock Text="{DynamicResource Email}" Classes="label"/>
                 <TextBox Text="{Binding PassengerEmail}" PlaceholderText="john@example.com"/>
-                <TextBlock Text="Teléfono" Classes="label"/>
+                <TextBlock Text="{DynamicResource Phone}" Classes="label"/>
                 <TextBox Text="{Binding PassengerPhone}" PlaceholderText="1234567890"/>
                 <TextBlock Text="{Binding StatusMessage}"
                            Foreground="{Binding StatusBrush}"
@@ -259,16 +272,16 @@
                   <Button Content="{Binding PassengerActionText}"
                           Command="{Binding RegisterPassengerCommand}"
                           Classes="accent"/>
-                  <Button Content="Editar seleccionado"
+                  <Button Content="{DynamicResource EditSelected}"
                           Command="{Binding EditPassengerCommand}"/>
-                  <Button Content="Cancelar edición"
+                  <Button Content="{DynamicResource CancelEdit}"
                           Command="{Binding CancelPassengerEditCommand}"
                           IsVisible="{Binding IsEditingPassenger}"/>
-                  <Button Content="Eliminar seleccionado"
+                  <Button Content="{DynamicResource DeleteSelected}"
                           Command="{Binding DeletePassengerCommand}"
                           Background="#DC2626" Foreground="White"/>
                 </StackPanel>
-                <TextBlock Text="Los pasajeros se guardan automáticamente."
+                <TextBlock Text="{DynamicResource PassengersSavedHint}"
                            Foreground="#6B7280" FontSize="12"/>
               </StackPanel>
             </Border>
@@ -277,13 +290,13 @@
       </TabItem>
 
       <!-- ==================== RESERVAS ==================== -->
-      <TabItem Header="Reservas y check-in">
+      <TabItem Header="{DynamicResource BookingsTab}">
         <Grid RowDefinitions="Auto,*,Auto" Margin="6">
           <Border Classes="card">
             <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*,Auto"
                   RowDefinitions="Auto,Auto"
                   ColumnSpacing="8" RowSpacing="6">
-              <TextBlock Text="Vuelo" Classes="label"/>
+              <TextBlock Text="{DynamicResource Flight}" Classes="label"/>
               <ComboBox Grid.Column="1"
                         ItemsSource="{Binding Flights}"
                         SelectedItem="{Binding SelectedFlight}"
@@ -294,7 +307,7 @@
                   </DataTemplate>
                 </ComboBox.ItemTemplate>
               </ComboBox>
-              <TextBlock Grid.Column="2" Text="Pasajero" Classes="label" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="2" Text="{DynamicResource Passenger}" Classes="label" Margin="8,0,0,0"/>
               <ComboBox Grid.Column="3"
                         ItemsSource="{Binding Passengers}"
                         SelectedItem="{Binding SelectedPassenger}"
@@ -305,7 +318,7 @@
                   </DataTemplate>
                 </ComboBox.ItemTemplate>
               </ComboBox>
-              <TextBlock Grid.Column="4" Text="Asiento" Classes="label" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="4" Text="{DynamicResource Seat}" Classes="label" Margin="8,0,0,0"/>
               <ComboBox Grid.Column="5"
                         ItemsSource="{Binding AvailableSeats}"
                         SelectedItem="{Binding SelectedSeat}"
@@ -321,11 +334,11 @@
 
           <Grid Grid.Row="1" RowDefinitions="Auto,*" Margin="0,10,0,0">
             <Grid ColumnDefinitions="70,100,200,80,100" Margin="12,4">
-              <TextBlock Text="ID" Classes="label"/>
-              <TextBlock Grid.Column="1" Text="Vuelo" Classes="label"/>
-              <TextBlock Grid.Column="2" Text="Pasajero" Classes="label"/>
-              <TextBlock Grid.Column="3" Text="Asiento" Classes="label"/>
-              <TextBlock Grid.Column="4" Text="Estado" Classes="label"/>
+              <TextBlock Text="{DynamicResource Id}" Classes="label"/>
+              <TextBlock Grid.Column="1" Text="{DynamicResource Flight}" Classes="label"/>
+              <TextBlock Grid.Column="2" Text="{DynamicResource Passenger}" Classes="label"/>
+              <TextBlock Grid.Column="3" Text="{DynamicResource Seat}" Classes="label"/>
+              <TextBlock Grid.Column="4" Text="{DynamicResource Status}" Classes="label"/>
             </Grid>
             <ListBox Grid.Row="1"
                      ItemsSource="{Binding Bookings}"
@@ -345,12 +358,12 @@
           </Grid>
 
           <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,10,0,0">
-            <Button Content="Check-in" Command="{Binding CheckInCommand}"/>
-            <Button Content="Editar reserva" Command="{Binding EditBookingCommand}"/>
-            <Button Content="Cancelar edición" Command="{Binding CancelBookingEditCommand}"
+            <Button Content="{DynamicResource CheckIn}" Command="{Binding CheckInCommand}"/>
+            <Button Content="{DynamicResource EditBooking}" Command="{Binding EditBookingCommand}"/>
+            <Button Content="{DynamicResource CancelEdit}" Command="{Binding CancelBookingEditCommand}"
                     IsVisible="{Binding IsEditingBooking}"/>
-            <Button Content="Cancelar reserva" Command="{Binding CancelBookingCommand}"/>
-            <Button Content="Eliminar reserva" Command="{Binding DeleteBookingCommand}"
+            <Button Content="{DynamicResource CancelBooking}" Command="{Binding CancelBookingCommand}"/>
+            <Button Content="{DynamicResource DeleteBooking}" Command="{Binding DeleteBookingCommand}"
                     Background="#DC2626" Foreground="White"/>
           </StackPanel>
         </Grid>

@@ -181,6 +181,16 @@ The main window has three tabs:
 
 A confirmation dialog appears before any deletion, explaining which records will be affected.
 
+A seat can only be assigned to one booking per flight. This is validated when booking, when editing a booking and at check-in; the saved seat map is also reconciled with the bookings on load, so a stale file cannot produce duplicate seats.
+
+The UI starts in **English**. Use the language selector at the top of the login window (or in the main window header) to switch to **Español** at any time; all texts update immediately and the choice is saved in `ui_settings.json` next to the data file.
+
+The console asks for the language before the login prompt (`1` = English, `2` = Español). Press Enter to keep the preference saved by the other app; both apps read and write the same `ui_settings.json`.
+
+### App logo
+
+The logo is taken automatically from the most recent image in `%USERPROFILE%\Downloads\Logo` (png/jpg/bmp/gif). Just replace or add the image there and run `dotnet build`: `Assets/app-logo.png` and `Assets/app-icon.ico` are regenerated for the window, the taskbar and the executable, with no manual editing. To use another folder, build with `-p:LogoSourceDir="C:\path\to\your\logo"`. If the app is open, close it first so the executable can be replaced.
+
 ### Code structure
 
 ```text
@@ -396,6 +406,16 @@ La ventana principal tiene tres pestañas:
 - **Reservas y check-in**: selección de vuelo/pasajero/asiento, reserva, edición, check-in y eliminación.
 
 Antes de cualquier borrado aparece una ventana de confirmación que indica qué registros se verán afectados.
+
+Un asiento solo puede pertenecer a una reserva por vuelo. Se valida al reservar, al editar una reserva y en el check-in; además, al cargar los datos se corrige el mapa de asientos a partir de las reservas, para que un archivo desincronizado no permita duplicados.
+
+La interfaz se inicia en **inglés**. El selector de idioma de la ventana de login (o de la cabecera de la ventana principal) permite cambiar a **Español** en cualquier momento: todos los textos se actualizan al instante y la preferencia se guarda en `ui_settings.json`, junto al archivo de datos.
+
+La consola pregunta el idioma antes del login (`1` = English, `2` = Español). Pulsa Enter para conservar la preferencia guardada por la otra app; ambas leen y escriben el mismo `ui_settings.json`.
+
+### Logo de la aplicación
+
+El logo se toma automáticamente de la imagen más reciente en `%USERPROFILE%\Downloads\Logo` (png/jpg/bmp/gif). Solo cambia o añade la imagen ahí y ejecuta `dotnet build`: se regeneran `Assets/app-logo.png` y `Assets/app-icon.ico` para la ventana, la barra de tareas y el ejecutable, sin editar nada a mano. Para usar otra carpeta, compila con `-p:LogoSourceDir="C:\ruta\a\tu\logo"`. Si la app está abierta, ciérrala antes para poder reemplazar el ejecutable.
 
 ### Estructura del código
 

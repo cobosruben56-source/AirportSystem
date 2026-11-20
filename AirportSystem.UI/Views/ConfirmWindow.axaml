@@ -1,18 +1,18 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="AirportSystem.UI.Views.ConfirmWindow"
-        Title="Confirmar acción"
+        Title="{DynamicResource ConfirmTitle}"
         Width="420" SizeToContent="Height"
         CanResize="False"
         WindowStartupLocation="CenterOwner"
-        Icon="/Assets/avalonia-logo.png">
+        Icon="/Assets/app-logo.png">
 
   <Border Padding="22">
     <StackPanel Spacing="18">
       <TextBlock x:Name="MessageText" FontSize="14" TextWrapping="Wrap"/>
       <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
-        <Button Content="Cancelar" Width="100" Click="OnCancelClick"/>
-        <Button Content="Aceptar" Width="100" Classes="accent" Click="OnAcceptClick"/>
+        <Button Content="{DynamicResource Cancel}" Width="100" Click="OnCancelClick"/>
+        <Button Content="{DynamicResource Accept}" Width="100" Classes="accent" Click="OnAcceptClick"/>
       </StackPanel>
     </StackPanel>
   </Border>
